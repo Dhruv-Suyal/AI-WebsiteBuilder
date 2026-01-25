@@ -1,7 +1,8 @@
+import { Home } from "./components/home"
 
 export function App(){
   return <>
-  <h1>Hi There</h1>
+    <Home/>
   </>
 }
 
