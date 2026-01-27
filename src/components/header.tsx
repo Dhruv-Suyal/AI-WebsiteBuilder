@@ -1,21 +1,32 @@
 import logo from '../assets/logo.png'
-
+import hamBurger from '../assets/hamburger.svg'
 
 export function Header(){
     return (
     <>
-    <div className=" bg-red-400 w-full h-32 flex">
-        <div className=" ml-8 Logo bg-amber-300 w-60 h-full">
-            <img className=' object-contain w-full h-full' src={logo} alt="" />
+    <nav className='w-full h-18 relative'>
+        <div className=" w-full h-full absolute bg-white/8 backdrop-blur-lg shadow-xl border-white/10 z-0 "></div>
+        <div className='flex justify-between lg:px-32 px-8 relative z-60 h-full'>
+            <div className="Logo w-30 h-full">
+                <a href="/">
+                    <img className=' object-contain w-full h-full' src={logo} alt="" />
+                </a>
+            </div>
+            <div className="hidden Pagelinks lg:flex gap-8 items-center text-white font-semibold">
+                <div className=' hover:text-gray-200'><a href="/">Creations</a></div>
+                <div className=' hover:text-gray-200'><a href="/">About</a></div>
+                <div className=' hover:text-gray-200'><a href="/">Testimonials</a></div>
+                <div className=' hover:text-gray-200'><a href="/">Contact</a></div>
+            </div>
+            <div className="hidden headerButton mr-3 text-white font-semibold lg:flex gap-3 items-center">
+                <button className=' bg-blue-700 w-34 h-10 rounded-lg cursor-pointer hover:bg-blue-800'>Get started</button>
+                <button className=' w-24 h-10 rounded-lg border border-white cursor-pointer hover:bg-slate-300/20'>Login</button>
+            </div>
+            <div className="headerButton lg:hidden h-8 w-10 my-auto">
+                <img className=' w-full h-full object-contain' src={hamBurger} alt="" />
+            </div>
         </div>
-        <div className="Pagelinks flex gap-3">
-            <div><a href="/">Creations</a></div>
-            <div><a href="/">About</a></div>
-            <div><a href="/">Testimonials</a></div>
-            <div><a href="/">Contact</a></div>
-        </div>
-        <div className="headerButton"></div>
-    </div>
+    </nav>
     </>
     )
 }
