@@ -12,7 +12,7 @@ export function Header(){
                     <img className=' object-contain w-full h-full invert' src={logo} alt="" />
                 </a>
             </div>
-            <div className="hidden Pagelinks lg:flex gap-8 xl:ml-20 items-center text-white font-semibold">
+            <div className="hidden Pagelinks lg:flex gap-8 items-center text-white font-semibold">
                 <div className=' hover:text-gray-200'><a href="/">Creations</a></div>
                 <div className=' hover:text-gray-200'><a href="/">About</a></div>
                 <div className=' hover:text-gray-200'><a href="/">Testimonials</a></div>
