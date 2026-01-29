@@ -12,13 +12,13 @@ export function Header(){
                     <img className=' object-contain w-full h-full invert' src={logo} alt="" />
                 </a>
             </div>
-            <div className="hidden Pagelinks lg:flex gap-8 items-center text-white font-semibold">
+            <div className="hidden Pagelinks lg:flex gap-8 xl:ml-20 items-center text-white font-semibold">
                 <div className=' hover:text-gray-200'><a href="/">Creations</a></div>
                 <div className=' hover:text-gray-200'><a href="/">About</a></div>
                 <div className=' hover:text-gray-200'><a href="/">Testimonials</a></div>
                 <div className=' hover:text-gray-200'><a href="/">Contact</a></div>
             </div>
-            <div className="hidden headerButton mr-3 text-white font-semibold lg:flex gap-3 items-center">
+            <div className="hidden headerButton text-white font-semibold lg:flex gap-3 items-center">
                 <button className=' bg-blue-700 w-34 h-10 rounded-lg cursor-pointer hover:bg-blue-800'>Get started</button>
                 <button className=' w-24 h-10 rounded-lg border border-white cursor-pointer hover:bg-slate-300/20'>Login</button>
             </div>
