@@ -4,8 +4,8 @@ import hamBurger from '../assets/hamburger.svg'
 export function Header(){
     return (
     <>
-    <nav className='w-full h-18 relative'>
-        <div className=" w-full h-full absolute bg-white/8 backdrop-blur-lg shadow-xl border-white/10 z-0 "></div>
+    <nav className='w-full h-18 sticky top-0 z-90 backdrop-blur'>
+        <div className=" w-full h-full absolute z-0 "></div>
         <div className='flex justify-between lg:px-32 px-8 relative z-60 h-full'>
             <div className="Logo w-30 h-full">
                 <a href="/">
