@@ -44,15 +44,15 @@ export function Home(){
             </div>
         </div>
 
-        <div className="ourCreationDiv relative mt-20 flex justify-center h-120">
-            <div className="firstCreation h-full lg:w-175 bg-amber-300">
-                <img className=" w-full h-full object-fit" src={foodSitePNG} alt="" />
+        <div className="ourCreationDiv relative mt-20 flex gap-3 justify-center h-120">
+            <div className="firstCreation h-full rounded-2xl lg:w-175">
+                <img className=" w-full h-full rounded-2xl object-fit" src={foodSitePNG} alt="" />
             </div>
-            <div className="2ndCreation h-full lg:w-50 bg-red-600">
-                <img className=" w-full h-full object-fit" src={elctroSitePNG} alt="" />
+            <div className="2ndCreation h-full rounded-2xl lg:w-50">
+                <img className=" w-full h-full rounded-2xl object-cover" src={elctroSitePNG} alt="" />
             </div>
-            <div className="3rdCreation h-full lg:w-50 bg-blue-500">
-                <img className=" w-full h-full object-fill" src={aiSitePng} alt="" />
+            <div className="3rdCreation h-full rounded-2xl lg:w-50">
+                <img className=" w-full h-full rounded-2xl object-cover" src={aiSitePng} alt="" />
             </div>
 
         </div>
