@@ -38,13 +38,13 @@ export function Home(){
         </div>
 
         <div className="ourCreation relative z-60 mt-30 flex items-center justify-center flex-col gap-3">
-            <h1 className=" font-semibold  text-5xl text-white">Our latest creation</h1>
+            <h1 className=" font-bold  text-5xl text-white">Our latest creation</h1>
             <div className=" max-w-130 text-center">
             <p className="font-semibold text-28  text-gray-600">A visual collection of our most recent works - each piece crafted with intention, emotion, and style.</p>
             </div>
         </div>
 
-        <div className="ourCreationDiv relative mt-20 flex gap-3 justify-center h-120">
+        <div className="ourCreationDiv relative mt-15 flex gap-3 justify-center h-120">
             <div className="firstCreation h-full rounded-2xl lg:w-175">
                 <img className=" w-full h-full rounded-2xl object-fit" src={foodSitePNG} alt="" />
             </div>
@@ -54,8 +54,55 @@ export function Home(){
             <div className="3rdCreation h-full rounded-2xl lg:w-50">
                 <img className=" w-full h-full rounded-2xl object-cover" src={aiSitePng} alt="" />
             </div>
+        </div>
+
+        <div className="aboutOurAppHeading relative z-60 mt-30 flex items-center justify-center flex-col gap-3">
+            <h1 className=" font-bold  text-5xl text-white">About Our App</h1>
+            <div className=" max-w-130 text-center">
+            <p className="font-semibold text-28  text-gray-600">A visual collection of our most recent works - each piece crafted with intention, emotion, and style.</p>
+            </div>
+        </div>
+
+        <div className="aboutOurApp relative z-60 mt-8 flex justify-center gap-10 h-60">
+
+            <div className="lg:max-w-2xl w-80 h-full flex justify-center gap-4 flex-col">
+                <div className="w-12 h-12 bg-red-600 rounded-lg"></div>
+                <div className="flex flex-col">
+                    <h1 className=" text-white font-semibold text-lg">Lightning-Fast Performance</h1>
+                    <div className=" max-w-60">
+                        <p className="font-semibold text-28  text-gray-600">Built with speed — minimal load times and optimized.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div className="lg:max-w-2xl w-90 h-full flex items-center gap-8">
+                <div className=" h-full w-1/250 bg-blue-900"></div>
+                <div className=" flex flex-col">
+                    <div className="w-12 h-12 bg-red-600 rounded-lg"></div>
+                    <div>
+                        <h1 className=" text-white font-semibold text-lg">Lightning-Fast Performance</h1>
+                        <div className=" max-w-60">
+                            <p className="font-semibold text-28  text-gray-600">Built with speed — minimal load times and optimized.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div className="lg:max-w-2xl w-90 h-full flex items-center gap-8">
+                <div className=" h-full w-1/250 bg-blue-900"></div>
+                <div className=" flex flex-col">
+                    <div className="w-12 h-12 bg-red-600 rounded-lg"></div>
+                    <div>
+                        <h1 className=" text-white font-semibold text-lg">Lightning-Fast Performance</h1>
+                        <div className=" max-w-60">
+                            <p className="font-semibold text-28  text-gray-600">Built with speed — minimal load times and optimized.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </div>
+
         
         </>
     )
