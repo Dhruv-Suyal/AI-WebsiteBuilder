@@ -1,6 +1,11 @@
 import { Header } from "./header"
 import arrow from "../assets/arrow.svg";
-import rect from "../assets/rect.svg"
+import rect from "../assets/rect.svg";
+import theme from "../assets/theme.png";
+import foodSitePNG from "../assets/food-site.png";
+import elctroSitePNG from "../assets/elctro-site.png";
+import aiSitePng from "../assets/website-builder-site.png"
+
 export function Home(){
     return (
         <>
@@ -22,13 +27,35 @@ export function Home(){
                 </div>
             </div>
         </div>
-            <div className=" mt-14 absolute z-60 flex w-full justify-center items-center">
-                <div className=" w-4xl h-96 flex justify-center items-center rounded-xl border-2 border-indigo-900">
-                    <div className=" w-210 h-84">
-                        {/* <img src={rect} alt="" /> */}
+
+
+        <div className=" mt-10 relative z-60 flex w-screen justify-center items-center p-3">
+                <div className=" w-full p-2 lg:w-4xl xl:w-5xl h-92 pt-7 flex justify-center items-center rounded-t-xl border-2 border-b-0 border-indigo-900">
+                    <div className=" lg:w-220 xl:w-250 h-92 w-full rounded-t-xl">
+                         <img className=" w-full h-full object-fit rounded-t-xl" src={theme} alt="" />              
                     </div>
                 </div>
-            </div>  
+        </div>
+
+        <div className="ourCreation relative z-60 mt-30 flex items-center justify-center flex-col gap-3">
+            <h1 className=" font-semibold  text-5xl text-white">Our latest creation</h1>
+            <div className=" max-w-130 text-center">
+            <p className="font-semibold text-28  text-gray-600">A visual collection of our most recent works - each piece crafted with intention, emotion, and style.</p>
+            </div>
+        </div>
+
+        <div className="ourCreationDiv relative mt-20 flex justify-center h-120">
+            <div className="firstCreation h-full lg:w-175 bg-amber-300">
+                <img className=" w-full h-full object-fit" src={foodSitePNG} alt="" />
+            </div>
+            <div className="2ndCreation h-full lg:w-50 bg-red-600">
+                <img className=" w-full h-full object-fit" src={elctroSitePNG} alt="" />
+            </div>
+            <div className="3rdCreation h-full lg:w-50 bg-blue-500">
+                <img className=" w-full h-full object-fill" src={aiSitePng} alt="" />
+            </div>
+
+        </div>
         
         </>
     )
