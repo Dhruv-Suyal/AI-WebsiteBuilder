@@ -63,7 +63,7 @@ export function Home(){
             </div>
         </div>
 
-        <div className="aboutOurApp relative z-60 mt-8 lg:flex lg:justify-center gap-10 h-60 grid sm:grid-cols-2 grid-cols-1 px-16">
+        <div className="aboutOurApp relative z-60 mt-8 lg:flex lg:justify-center gap-10 h-auto grid sm:grid-cols-2 grid-cols-1 px-16">
 
             <div className="lg:max-w-2xl lg:w-80 sm:w-60 w-full h-full flex justify-center gap-4 flex-col">
                 <div className="w-12 h-12 bg-red-600 rounded-lg"></div>
@@ -101,6 +101,38 @@ export function Home(){
                 </div>
             </div>
 
+        </div>
+
+        <div className="aboutOurAppHeading relative z-60 mt-30 flex items-center justify-center flex-col gap-3 px-4">
+            <h1 className=" font-bold  text-5xl text-white text-center">Get in touch</h1>
+            <div className=" max-w-130 text-center">
+            <p className="font-semibold text-28  text-gray-600">A visual collection of our most recent works - each piece crafted with intention, emotion, and style.</p>
+            </div>
+        </div>
+
+        <div className="getInfoBox relative mt-6 flex justify-center px-8">
+            <div className=" sm:max-w-300 h-80 px-8">
+                <form>
+                    <div className="inputBox flex gap-5 justify-center">
+                        <div className=" flex flex-col">
+                            <label htmlFor="nameBox" className=" text-slate-200 mb-2 font-semibold">Your name</label>
+                            <input type="text" id="nameBox" className=" text-white w-70 py-2 rounded-lg pl-3 border border-slate-800" placeholder="Enter your name" />
+                        </div>
+
+                        <div className=" flex flex-col">
+                            <label htmlFor="emailBox" className=" text-slate-200 mb-2 font-semibold">Email id</label>
+                            <input type="text" id="emailBox" className=" text-white w-70 py-2 rounded-lg pl-3 border border-slate-800" placeholder="Enter your Email" />
+                        </div>  
+                    </div>
+                    <div className=" flex flex-col">
+                            <label htmlFor="messageBox" className=" text-slate-200 mb-2 mt-4 font-semibold">Message</label>
+                            <input type="text" id="messageBox" className=" text-white w-145 py-2 pb-32 rounded-lg pl-3 border border-slate-800" placeholder="Enter your message" />
+                    </div>
+                    <div className="sumbit mt-5">
+                        <button className=" px-10 py-4 text-white bg-indigo-600 rounded-2xl text-lg font-semibold">Submit</button>
+                    </div>  
+                </form>
+            </div>
         </div>
 
         
