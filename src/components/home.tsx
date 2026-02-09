@@ -11,6 +11,11 @@ export function Home(){
         <>
         <title>Home</title>
         <Header/>
+        <div className="fixed inset-0 -z-1 pointer-events-none w-screen">
+            <div className="absolute left-1/2 top-20 -translate-x-1/2 w-245 h-115 bg-linear-to-tr from-violet-800/40 to-transparent rounded-full blur-3xl"></div>
+            <div className="absolute right-12 bottom-10 w-105 h-55 bg-linear-to-bl from-fuchsia-700/40 to-transparent rounded-full blur-2xl "></div>
+        </div>
+        
         <div className="flex items-center justify-center w-full h-full">
             <div className="absolute top-0 xl:w-full xl:h-full flex justify-center">
                 <img className="w-full h-full object-contain xl:hidden" src={rect} alt="" />
