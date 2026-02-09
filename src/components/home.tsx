@@ -1,4 +1,5 @@
 import { Header } from "./header"
+import "../App.css"
 import arrow from "../assets/arrow.svg";
 import rect from "../assets/rect.svg";
 import theme from "../assets/theme.png";
@@ -11,7 +12,7 @@ export function Home(){
         <>
         <title>Home</title>
         <Header/>
-        <div className="fixed inset-0 -z-1 pointer-events-none w-screen">
+        <div className="fixed inset-0 -z-1 pointer-events-none w-full">
             <div className="absolute left-1/2 top-20 -translate-x-1/2 w-245 h-115 bg-linear-to-tr from-violet-800/40 to-transparent rounded-full blur-3xl"></div>
             <div className="absolute right-12 bottom-10 w-105 h-55 bg-linear-to-bl from-fuchsia-700/40 to-transparent rounded-full blur-2xl "></div>
         </div>
@@ -34,7 +35,7 @@ export function Home(){
         </div>
 
 
-        <div className=" mt-10 relative z-60 flex w-screen justify-center items-center p-3">
+        <div className=" mt-10 relative z-60 flex w-full justify-center items-center p-3">
                 <div className=" w-full p-2 lg:w-4xl xl:w-5xl h-92 pt-7 flex justify-center items-center rounded-t-xl border-2 border-b-0 border-indigo-900">
                     <div className=" lg:w-220 xl:w-250 h-92 w-full rounded-t-xl">
                          <img className=" w-full h-full object-fit rounded-t-xl" src={theme} alt="" />              
