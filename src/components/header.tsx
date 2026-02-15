@@ -1,6 +1,7 @@
 import logo from '../assets/logo.png'
 import hamBurger from '../assets/hamburger.svg'
 
+//Header for website
 export function Header(){
     return (
     <>
