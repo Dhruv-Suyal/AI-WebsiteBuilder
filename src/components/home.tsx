@@ -6,7 +6,7 @@ import theme from "../assets/theme.png";
 import foodSitePNG from "../assets/food-site.png";
 import elctroSitePNG from "../assets/elctro-site.png";
 import aiSitePng from "../assets/website-builder-site.png"
-
+// Home page
 export function Home(){
     return (
         <>
