@@ -10,7 +10,7 @@ export function Header(){
         <div className='flex justify-between lg:px-32 px-8 relative z-60 h-full'>
             <div className="Logo w-30 h-full">
                 <a href="/">
-                    <img className=' object-contain w-full h-full invert' src={logo} alt="" />
+                    <img className=' object-contain w-full h-full' src={logo} alt="" />
                 </a>
             </div>
             <div className="hidden Pagelinks lg:flex gap-8 items-center text-white font-semibold">

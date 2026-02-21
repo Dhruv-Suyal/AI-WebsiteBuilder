@@ -3,9 +3,12 @@ import "../App.css"
 import arrow from "../assets/arrow.svg";
 import rect from "../assets/rect.svg";
 import theme from "../assets/theme.png";
-import foodSitePNG from "../assets/food-site.png";
+import blogSitePNG from "../assets/blogSite.png";
 import elctroSitePNG from "../assets/elctro-site.png";
 import aiSitePng from "../assets/website-builder-site.png"
+import lightningImg from '../assets/lightning.png'
+import ideaToWebPng from '../assets/ideaToWebsite.png'
+import editWithoutCodingPng from '../assets/editWithoutCoding.png'
 // Home page
 export function Home(){
     return (
@@ -36,8 +39,8 @@ export function Home(){
 
 
         <div className=" mt-10 relative z-60 flex w-full justify-center items-center p-3">
-                <div className=" w-full p-2 lg:w-4xl xl:w-5xl h-92 pt-7 flex justify-center items-center rounded-t-xl border-2 border-b-0 border-indigo-900">
-                    <div className=" lg:w-220 xl:w-250 h-92 w-full rounded-t-xl">
+                <div className=" w-full p-2 lg:w-4xl xl:w-5xl sm:h-92 h-60 pt-7 flex justify-center items-center rounded-t-xl border-2 border-b-0 border-indigo-900">
+                    <div className=" lg:w-220 xl:w-250 h-60 w-full sm:h-92 rounded-t-xl">
                          <img className=" w-full h-full object-fit rounded-t-xl" src={theme} alt="" />              
                     </div>
                 </div>
@@ -50,9 +53,9 @@ export function Home(){
             </div>
         </div>
 
-        <div className="ourCreationDiv relative mt-15 flex gap-3 justify-center h-120 px-8">
+        <div className="ourCreationDiv relative mt-15 flex gap-3 justify-center h-130 px-8">
             <div className="firstCreation h-full rounded-2xl lg:w-175">
-                <img className=" w-full h-full rounded-2xl object-fit" src={foodSitePNG} alt="" />
+                <img className=" w-full h-full rounded-2xl object-cover" src={blogSitePNG} alt="" />
             </div>
             <div className="2ndCreation h-full rounded-2xl lg:w-50">
                 <img className=" w-full h-full rounded-2xl object-cover" src={elctroSitePNG} alt="" />
@@ -65,14 +68,16 @@ export function Home(){
         <div className="aboutOurAppHeading relative z-60 mt-30 flex items-center justify-center flex-col gap-3 px-4">
             <h1 className=" font-bold  text-[9vw]  sm:text-5xl text-white text-center">About Our App</h1>
             <div className=" max-w-130 text-center">
-            <p className="font-semibold text-28  text-gray-600">A visual collection of our most recent works - each piece crafted with intention, emotion, and style.</p>
+            <p className="font-semibold text-28  text-gray-600">Empowering creators, startups, and developers to launch websites effortlessly.</p>
             </div>
         </div>
 
         <div className="aboutOurApp relative z-60 mt-8 lg:flex lg:justify-center gap-10 h-auto grid sm:grid-cols-2 grid-cols-1 px-16">
 
-            <div className="lg:max-w-2xl lg:w-80 sm:w-60 w-full h-full flex justify-center gap-4 flex-col">
-                <div className="w-12 h-12 bg-red-600 rounded-lg"></div>
+            <div className="lg:max-w-2xl lg:w-80 sm:w-60 w-full h-full flex gap-1.5 justify-center flex-col">
+                <div className="w-15 h-15 rounded-lg">
+                    <img src={lightningImg} className=" w-full h-full" alt="" />
+                </div>
                 <div className="flex flex-col">
                     <h1 className=" text-white font-semibold text-lg">Lightning-Fast Performance</h1>
                     <div className=" lg:max-w-60">
@@ -81,14 +86,16 @@ export function Home(){
                 </div>
             </div>
 
-            <div className="lg:max-w-2xl sm:w-60 w-full lg:w-90 h-full sm:flex items-center gap-8">
+            <div className="lg:max-w-2xl sm:w-60 w-full lg:w-90 h-full sm:flex items-center gap-1.5">
                 <div className=" sm:h-full sm:w-1/250 w-full h-1/250 bg-blue-900"></div>
                 <div className=" flex flex-col mt-8 sm:mt-0">
-                    <div className="w-12 h-12 bg-red-600 rounded-lg"></div>
+                    <div className="w-15 h-15 rounded-lg">
+                        <img src={ideaToWebPng} className=" w-full h-full rounded-full" alt="" />
+                    </div>
                     <div>
-                        <h1 className=" text-white font-semibold text-lg">Lightning-Fast Performance</h1>
+                        <h1 className=" text-white font-semibold text-lg">Turn Your Ideas into a Live Website</h1>
                         <div className=" max-w-60">
-                            <p className="font-semibold text-28  text-gray-600">Built with speed — minimal load times and optimized.</p>
+                            <p className="font-semibold text-28  text-gray-600">Turn your idea into a live website instantly.</p>
                         </div>
                     </div>
                 </div>
@@ -97,11 +104,13 @@ export function Home(){
             <div className="lg:max-w-2xl sm:w-60 w-full lg:w-90 h-full sm:flex items-center gap-8">
                 <div className=" lg:h-full lg:block lg:w-1/250 w-full h-1/250 sm:hidden bg-blue-900"></div>
                 <div className=" flex flex-col mt-8 sm:mt-0">
-                    <div className="w-12 h-12 bg-red-600 rounded-lg"></div>
+                    <div className="w-15 h-15 rounded-lg">
+                        <img src={editWithoutCodingPng} className=" w-full h-full rounded-full" alt="" />
+                    </div>
                     <div>
-                        <h1 className=" text-white font-semibold text-lg">Lightning-Fast Performance</h1>
+                        <h1 className=" text-white font-semibold text-lg">Edit Without Coding</h1>
                         <div className=" max-w-60">
-                            <p className="font-semibold text-28  text-gray-600">Built with speed — minimal load times and optimized.</p>
+                            <p className="font-semibold text-28  text-gray-600">Change design, content, and layout effortlessly.</p>
                         </div>
                     </div>
                 </div>
