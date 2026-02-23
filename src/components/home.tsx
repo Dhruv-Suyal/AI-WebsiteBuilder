@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Header } from "./header";
-import "./home.css"
+import "./home.css";
 const WORDS = ["stunning", "powerful", "blazing-fast", "pixel-perfect", "production-ready"];
 
 const FEATURES = [
@@ -19,24 +18,32 @@ const STEPS = [
 ];
 
 const PLANS = [
-  { name: "Free", price: "$0", features: ["5 generations/month", "HTML export", "Community support", "Subdomain hosting"], cta: "Get Started", hot: false },
-  { name: "Pro", price: "$29", features: ["Unlimited generations", "React + Tailwind export", "Custom domain + SSL", "CMS scaffolding", "Priority support"], cta: "Start Pro", hot: true },
-  { name: "Team", price: "$99", features: ["Everything in Pro", "5 team seats", "API access", "White-label export", "Dedicated manager"], cta: "Contact Sales", hot: false },
+  { name: "Free", price: "$0", desc: "For individuals exploring AI-generated websites.", features: ["5 generations/month", "HTML export", "Community support", "Subdomain hosting"], cta: "Get Started", hot: false },
+  { name: "Pro", price: "$29", desc: "For founders and creators who ship fast.", features: ["Unlimited generations", "React + Tailwind export", "Custom domain + SSL", "CMS scaffolding", "Priority support"], cta: "Start Pro", hot: true },
+  { name: "Team", price: "$99", desc: "For agencies and teams building at scale.", features: ["Everything in Pro", "5 team seats", "API access", "White-label export", "Dedicated manager"], cta: "Contact Sales", hot: false },
 ];
 
 const EXAMPLES = [
-  "Dark SaaS landing page for a project management tool",
-  "Luxury e-commerce store for handmade ceramics",
-  "Portfolio for a motion graphics designer",
+  "Dark SaaS landing page for a PM tool",
+  "Luxury e-commerce for handmade ceramics",
+  "Portfolio for a motion designer",
   "Booking platform for a high-end spa",
 ];
 
+const STATS = [
+  { value: "12s", label: "Avg. generation" },
+  { value: "50K+", label: "Sites built" },
+  { value: "99.9%", label: "Uptime SLA" },
+  { value: "4.9★", label: "User rating" },
+];
+
 export function Home() {
- 
+  const [menuOpen, setMenuOpen] = useState(false);
   const [wordIdx, setWordIdx] = useState(0);
   const [wordVisible, setWordVisible] = useState(true);
   const [prompt, setPrompt] = useState("");
   const [focused, setFocused] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const textRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
@@ -47,51 +54,64 @@ export function Home() {
     return () => clearInterval(t);
   }, []);
 
-  
+  useEffect(() => {
+    const fn = () => setScrolled(window.scrollY > 30);
+    window.addEventListener("scroll", fn);
+    return () => window.removeEventListener("scroll", fn);
+  }, []);
 
   return (
-    <div style={{ background: "#000008", color: "#e2e2f0", fontFamily: "'Sora', sans-serif", overflowX: "hidden" }}>
+    <div className="min-h-screen bg-[#000008] text-slate-200 overflow-x-hidden" style={{ fontFamily: "'Sora', sans-serif" }}>
 
-      {/* ─── NAV ─── */}
-        <Header/>
-
-      {/* ─── HERO ─── */}
-      <section className="hero">
+      <section className="relative min-h-screen flex flex-col items-center justify-center pt-32 pb-20 px-5 overflow-hidden">
         <div className="hero-grid" />
-        <div className="orb o1" />
-        <div className="orb o2" />
-        <div className="orb o3" />
+        <div className="orb-1" />
+        <div className="orb-2" />
+        <div className="orb-3" />
 
-        <div className="hero-content">
-          <div className="hero-badge a1">
-            <div className="badge-pulse" />
-            Now in public beta — 50,000+ sites built
+        <div className="relative z-10 flex flex-col items-center w-full">
+
+          {/* Badge */}
+          <div className="badge-border animate-fadeUp-1 inline-flex items-center gap-2.5 bg-indigo-500/10 border border-indigo-500/30 rounded-full px-5 py-1.5 mb-9">
+            <span className="badge-dot-pulse w-[7px] h-[7px] rounded-full bg-indigo-500 flex-shrink-0" style={{ boxShadow: "0 0 10px #6366f1" }} />
+            <span className="text-[13px] font-medium text-indigo-300 whitespace-nowrap" style={{ fontFamily: "'JetBrains Mono',monospace" }}>
+              Now in public beta — 50,000+ sites built
+            </span>
           </div>
 
-          <h1 className="hero-h1 a2">
+          {/* Headline */}
+          <h1 className="animate-fadeUp-2 text-[clamp(40px,6.5vw,84px)] font-extrabold text-center leading-[1.07] tracking-[-2.5px] text-white mb-6">
             Build{" "}
-            <span
-              className={`grad-text ${wordVisible ? "word-in" : "word-out"}`}
-              style={{ display: "inline-block" }}
-            >
+            <span className={`grad-text inline-block ${wordVisible ? "word-in" : "word-out"}`}>
               {WORDS[wordIdx]}
             </span>
             <br />
             websites from a prompt.
           </h1>
 
-          <p className="hero-sub a3">
+          {/* Sub */}
+          <p className="animate-fadeUp-3 text-center text-[clamp(15px,1.8vw,19px)] text-slate-600 font-normal leading-[1.8] max-w-[500px] mx-auto mb-12">
             Describe your website in plain English. Our AI generates a fully functional, production-ready site — in seconds.
           </p>
 
           {/* Prompt Box */}
-          <div className="pbox-wrap a4">
-            <div className={`pbox ${focused ? "focus" : ""}`}>
-              <div className="pbox-top">
-                <div className="pbox-label">Describe your website</div>
+          <div className="animate-fadeUp-4 w-full max-w-[700px]">
+            <div
+              className={`rounded-[20px] overflow-hidden transition-all duration-300 ${focused ? "prompt-glow border border-indigo-500/55" : "border border-white/[0.08]"}`}
+              style={{ background: "rgba(255,255,255,0.025)", boxShadow: focused ? undefined : "0 8px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06)" }}
+            >
+              {/* Top */}
+              <div className="px-6 pt-5 pb-4">
+                <div className="flex items-center gap-2 mb-3.5">
+                  <span className="w-[6px] h-[6px] rounded-full bg-indigo-500 flex-shrink-0" style={{ boxShadow: "0 0 8px #6366f1" }} />
+                  <span className="text-[10px] font-medium tracking-[2px] uppercase text-[#3a3a7a]" style={{ fontFamily: "'JetBrains Mono',monospace" }}>
+                    Describe your website
+                  </span>
+                </div>
                 <textarea
                   ref={textRef}
-                  className="pbox-ta"
+                  className="w-full bg-transparent border-none outline-none text-slate-200 text-[15px] font-normal leading-[1.75] resize-none"
+                  style={{ caretColor: "#818cf8", fontFamily: "'Sora', sans-serif" }}
                   rows={3}
                   placeholder="e.g. A sleek dark SaaS landing page for a project management tool with animated stats, pricing, and a glowing gradient CTA..."
                   value={prompt}
@@ -100,191 +120,289 @@ export function Home() {
                   onBlur={() => setFocused(false)}
                 />
               </div>
-              <div className="pbox-bot">
-                <span className="char-c">{prompt.length > 0 ? `${prompt.length} chars` : "Be as detailed as you like"}</span>
-                <button className="btn-cta" style={{ padding: "11px 28px", fontSize: 14 }}>
-                  Generate Website
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+
+              {/* Bottom Bar */}
+              <div className="flex items-center justify-between gap-4 px-5 py-3.5 bg-black/20 border-t border-white/[0.05] flex-wrap">
+                <span className="text-[11px] text-[#252550]" style={{ fontFamily: "'JetBrains Mono',monospace" }}>
+                  {prompt.length > 0 ? `${prompt.length} chars` : "Be as detailed as you like"}
+                </span>
+                <button
+                  className="grad-bg flex items-center gap-2 text-[14px] font-semibold text-white px-6 py-2.5 rounded-xl border-none cursor-pointer transition-all duration-200 hover:-translate-y-0.5 relative overflow-hidden whitespace-nowrap"
+                  style={{ boxShadow: "0 4px 24px rgba(99,102,241,0.45)" }}
+                >
+                  <span className="absolute inset-0 bg-gradient-to-br from-white/[0.18] to-transparent" />
+                  <span className="relative flex items-center gap-2">
+                    Generate Website
+                    <svg className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                  </span>
                 </button>
               </div>
             </div>
 
-            <div className="pills a5">
-              <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11, color: "#252545", lineHeight: "29px", flexShrink: 0 }}>Try →</span>
+            {/* Example Pills */}
+            <div className="animate-fadeUp-5 flex gap-2 mt-4 flex-wrap justify-center">
+              <span className="text-[11px] text-[#252545] leading-[29px] flex-shrink-0" style={{ fontFamily: "'JetBrains Mono',monospace" }}>Try →</span>
               {EXAMPLES.map(ex => (
-                <button key={ex} className="pill" onClick={() => { setPrompt(ex); textRef.current?.focus(); }}>
-                  {ex.length > 40 ? ex.slice(0, 40) + "…" : ex}
+                <button
+                  key={ex}
+                  onClick={() => { setPrompt(ex); textRef.current?.focus(); }}
+                  className="bg-white/[0.03] border border-white/[0.07] rounded-full px-4 py-1.5 text-[11px] text-slate-600 hover:border-indigo-500/50 hover:text-indigo-400 hover:bg-indigo-500/[0.07] transition-all duration-200 cursor-pointer whitespace-nowrap"
+                  style={{ fontFamily: "'JetBrains Mono',monospace" }}
+                >
+                  {ex}
                 </button>
               ))}
             </div>
           </div>
         </div>
 
-        {/* Scroll indicator */}
-        <div style={{ position: "absolute", bottom: 36, left: "50%", transform: "translateX(-50%)", display: "flex", flexDirection: "column", alignItems: "center", gap: 10, opacity: 0.3, zIndex: 1 }}>
-          <div style={{ width: 1, height: 40, background: "linear-gradient(to bottom, transparent, #6366f1)" }} />
-          <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 10, color: "#6366f1", letterSpacing: 2, textTransform: "uppercase" }}>scroll</span>
+        {/* Scroll hint */}
+        <div className="absolute bottom-9 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2.5 opacity-30 z-10">
+          <div className="w-px h-10 bg-gradient-to-b from-transparent to-indigo-500" />
+          <span className="text-[10px] tracking-[2px] uppercase text-indigo-400" style={{ fontFamily: "'JetBrains Mono',monospace" }}>scroll</span>
         </div>
       </section>
 
-      {/* ─── STATS ─── */}
-      <div className="stats-band">
-        <div className="stats-inner">
-          {[["12s", "Avg. generation"], ["50K+", "Sites built"], ["99.9%", "Uptime SLA"], ["4.9★", "User rating"]].map(([v, l]) => (
-            <div key={l} className="stat">
-              <div className="stat-v grad-text" style={{ backgroundSize: "200% auto" }}>{v}</div>
-              <div className="stat-l">{l}</div>
+      {/* ══════════════════════════════
+           STATS
+      ══════════════════════════════ */}
+      <div className="border-t border-white/[0.06] border-b border-white/[0.06] bg-white/[0.015]">
+        <div className="max-w-[960px] mx-auto px-8 py-14 grid grid-cols-2 md:grid-cols-4 gap-6">
+          {STATS.map(({ value, label }) => (
+            <div key={label} className="text-center">
+              <div className="grad-text text-[clamp(36px,4vw,56px)] font-extrabold tracking-[-2px] leading-none">{value}</div>
+              <div className="mt-2.5 text-[12px] text-[#333358] tracking-[0.5px]" style={{ fontFamily: "'JetBrains Mono',monospace" }}>{label}</div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* ─── FEATURES ─── */}
-      <div className="sec">
-        <span className="sec-badge">Features</span>
-        <h2 className="sec-title">Everything you need.<br /><span className="grad-text" style={{ backgroundSize: "200% auto" }}>Nothing you don't.</span></h2>
-        <p className="sec-sub">ForgeAI handles design, code, and deployment — so you can focus on building the product.</p>
-        <div className="feat-grid">
+      {/* ══════════════════════════════
+           FEATURES
+      ══════════════════════════════ */}
+      <section className="max-w-[1200px] mx-auto px-8 py-28">
+        <span className="inline-block bg-indigo-500/10 border border-indigo-500/20 rounded-full px-4 py-1.5 text-[11px] font-semibold text-indigo-400 tracking-[2px] uppercase mb-5" style={{ fontFamily: "'JetBrains Mono',monospace" }}>Features</span>
+        <h2 className="text-[clamp(28px,4vw,54px)] font-extrabold tracking-[-2px] leading-[1.08] text-white mb-4">
+          Everything you need.<br />
+          <span className="grad-text">Nothing you don't.</span>
+        </h2>
+        <p className="text-base text-slate-600 font-normal leading-[1.75] max-w-[420px]">
+          ForgeAI handles design, code, and deployment — so you can focus on building the product.
+        </p>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-16">
           {FEATURES.map((f, i) => (
-            <div key={i} className="feat-card">
-              <div className="feat-icon-wrap">{f.icon}</div>
-              <div className="feat-title">{f.title}</div>
-              <div className="feat-desc">{f.desc}</div>
+            <div
+              key={i}
+              className="feat-top-line relative bg-white/[0.022] border border-white/[0.065] rounded-[22px] p-9 transition-all duration-300 hover:border-indigo-500/25 hover:-translate-y-2.5 hover:bg-white/[0.04] overflow-hidden"
+              style={{ transitionTimingFunction: "cubic-bezier(.22,1,.36,1)" }}
+            >
+              <div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-indigo-500/10 border border-indigo-500/20 mb-6 text-[20px] text-indigo-400">
+                {f.icon}
+              </div>
+              <div className="text-[16px] font-bold text-slate-200 mb-3 tracking-[-0.2px]">{f.title}</div>
+              <div className="text-[14px] text-slate-600 leading-[1.8]">{f.desc}</div>
             </div>
           ))}
         </div>
-      </div>
+      </section>
 
-      {/* ─── HOW IT WORKS ─── */}
-      <div style={{ background: "rgba(255,255,255,.012)", borderTop: "1px solid rgba(255,255,255,.06)", borderBottom: "1px solid rgba(255,255,255,.06)" }}>
-        <div className="sec">
-          <span className="sec-badge">How It Works</span>
-          <h2 className="sec-title">Three steps to a<br /><span className="grad-text" style={{ backgroundSize: "200% auto" }}>live website.</span></h2>
+      {/* ══════════════════════════════
+           HOW IT WORKS
+      ══════════════════════════════ */}
+      <div className="bg-white/[0.012] border-t border-white/[0.06] border-b border-white/[0.06]">
+        <section className="max-w-[1200px] mx-auto px-8 py-28">
+          <span className="inline-block bg-indigo-500/10 border border-indigo-500/20 rounded-full px-4 py-1.5 text-[11px] font-semibold text-indigo-400 tracking-[2px] uppercase mb-5" style={{ fontFamily: "'JetBrains Mono',monospace" }}>How It Works</span>
+          <h2 className="text-[clamp(28px,4vw,54px)] font-extrabold tracking-[-2px] leading-[1.08] text-white mb-4">
+            Three steps to a<br />
+            <span className="grad-text">live website.</span>
+          </h2>
 
-          <div className="steps-grid">
+          {/* Steps */}
+          <div className="steps-connector relative grid grid-cols-1 md:grid-cols-3 gap-12 mt-16">
             {STEPS.map((s, i) => (
-              <div key={i} className="step">
-                <div className="step-num">{s.num}</div>
-                <div className="step-title">{s.title}</div>
-                <div className="step-desc">{s.desc}</div>
+              <div key={i} className="flex flex-col items-center text-center px-3">
+                <div
+                  className="grad-bg relative z-10 w-14 h-14 rounded-full flex items-center justify-center text-[15px] font-bold text-white mb-7"
+                  style={{ fontFamily: "'JetBrains Mono',monospace", boxShadow: "0 0 36px rgba(99,102,241,0.45)" }}
+                >
+                  {s.num}
+                </div>
+                <div className="text-[17px] font-bold text-slate-200 mb-3 tracking-[-0.2px]">{s.title}</div>
+                <div className="text-[14px] text-slate-600 leading-[1.8]">{s.desc}</div>
               </div>
             ))}
           </div>
 
-          {/* Fake Browser Preview */}
-          <div className="preview">
-            <div className="browser-bar">
-              <div className="dots">
-                <div className="dot" style={{ background: "#ff5f57" }} />
-                <div className="dot" style={{ background: "#febc2e" }} />
-                <div className="dot" style={{ background: "#28c840" }} />
+          {/* Preview Window */}
+          <div className="preview-top-line relative bg-white/[0.02] border border-white/[0.07] rounded-[24px] overflow-hidden mt-16" style={{ boxShadow: "0 40px 140px rgba(0,0,0,0.6)" }}>
+            {/* Browser Bar */}
+            <div className="flex items-center gap-3.5 px-5 py-3.5 border-b border-white/[0.06] bg-white/[0.02]">
+              <div className="flex gap-[7px]">
+                <div className="w-3 h-3 rounded-full bg-[#ff5f57]" />
+                <div className="w-3 h-3 rounded-full bg-[#febc2e]" />
+                <div className="w-3 h-3 rounded-full bg-[#28c840]" />
               </div>
-              <div className="url-bar">forgeai.app/preview/x9k2m</div>
+              <div className="flex-1 max-w-[320px] mx-auto bg-white/[0.04] border border-white/[0.06] rounded-lg px-4 py-1.5 text-[12px] text-[#33335a] text-center" style={{ fontFamily: "'JetBrains Mono',monospace" }}>
+                forgeai.app/preview/x9k2m
+              </div>
             </div>
-            <div className="gen-tag">
-              <div className="gen-dot" />
-              Generated in 11.2s
+
+            {/* Live Badge */}
+            <div className="absolute top-[58px] right-5 z-10 flex items-center gap-2 bg-[#000008]/92 border border-green-500/25 rounded-full px-3.5 py-1.5">
+              <span className="gen-dot-pulse w-[6px] h-[6px] rounded-full bg-green-400" style={{ boxShadow: "0 0 8px #4ade80" }} />
+              <span className="text-[11px] text-green-400" style={{ fontFamily: "'JetBrains Mono',monospace" }}>Generated in 11.2s</span>
             </div>
-            <div className="preview-body">
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 22, width: "100%", maxWidth: 580, textAlign: "center" }}>
-                <div style={{ width: 52, height: 52, borderRadius: 16, background: "linear-gradient(135deg,#3b82f6,#7c3aed)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, boxShadow: "0 0 32px rgba(99,102,241,.5)" }}>⚡</div>
-                <h3 style={{ fontSize: "clamp(24px,4vw,40px)", fontWeight: 800, letterSpacing: -1.5, color: "#fff", lineHeight: 1.1 }}>
+
+            {/* Fake Website Preview */}
+            <div className="flex items-center justify-center px-8 py-12 min-h-[300px]" style={{ background: "linear-gradient(180deg, rgba(8,4,28,0.9) 0%, rgba(0,0,8,1) 100%)" }}>
+              <div className="flex flex-col items-center gap-5 w-full max-w-[560px] text-center">
+                <div className="w-12 h-12 rounded-2xl grad-bg flex items-center justify-center text-[22px]" style={{ boxShadow: "0 0 32px rgba(99,102,241,0.5)" }}>⚡</div>
+                <h3 className="text-[clamp(22px,4vw,38px)] font-extrabold tracking-[-1.5px] text-white leading-[1.1]">
                   Manage projects<br />
-                  <span style={{ background: "linear-gradient(90deg,#60a5fa,#818cf8,#c084fc)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>at light speed.</span>
+                  <span className="grad-text">at light speed.</span>
                 </h3>
-                <p style={{ fontSize: 15, color: "#33335a", maxWidth: 360, lineHeight: 1.75 }}>The only project tool built for teams that actually ship. AI-powered, deeply integrated, beautifully designed.</p>
-                <div style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}>
-                  <div style={{ padding: "12px 30px", borderRadius: 12, fontWeight: 700, fontSize: 14, background: "linear-gradient(135deg,#3b82f6,#6366f1,#a855f7)", color: "#fff", boxShadow: "0 4px 24px rgba(99,102,241,.45)", cursor: "default" }}>Start Free Trial</div>
-                  <div style={{ padding: "12px 30px", borderRadius: 12, fontWeight: 500, fontSize: 14, border: "1px solid rgba(255,255,255,.08)", color: "#44446a", cursor: "default" }}>Watch Demo →</div>
+                <p className="text-[14px] text-slate-600 max-w-[360px] leading-[1.75]">
+                  The only project tool built for teams that actually ship. AI-powered, deeply integrated, beautifully designed.
+                </p>
+                <div className="flex gap-3 flex-wrap justify-center">
+                  <div className="grad-bg px-7 py-3 rounded-xl text-[14px] font-bold text-white" style={{ boxShadow: "0 4px 24px rgba(99,102,241,0.45)" }}>Start Free Trial</div>
+                  <div className="px-7 py-3 rounded-xl text-[14px] font-medium text-slate-600 border border-white/[0.08]">Watch Demo →</div>
                 </div>
-                <div style={{ display: "flex", gap: 48, paddingTop: 28, borderTop: "1px solid rgba(255,255,255,.06)", width: "100%", justifyContent: "center" }}>
+                <div className="flex gap-12 pt-7 border-t border-white/[0.06] w-full justify-center">
                   {[["10K+", "Teams"], ["99.9%", "Uptime"], ["4.8★", "Rating"]].map(([v, l]) => (
                     <div key={l}>
-                      <div style={{ fontSize: 28, fontWeight: 800, letterSpacing: -1, background: "linear-gradient(90deg,#60a5fa,#818cf8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{v}</div>
-                      <div style={{ fontSize: 11, color: "#33335a", fontFamily: "'JetBrains Mono',monospace", marginTop: 4 }}>{l}</div>
+                      <div className="grad-text text-[28px] font-extrabold tracking-[-1px]">{v}</div>
+                      <div className="text-[11px] text-slate-700 mt-1" style={{ fontFamily: "'JetBrains Mono',monospace" }}>{l}</div>
                     </div>
                   ))}
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </section>
       </div>
 
-      {/* ─── PRICING ─── */}
-      <div className="sec">
-        <span className="sec-badge">Pricing</span>
-        <h2 className="sec-title">Simple, transparent<br /><span className="grad-text" style={{ backgroundSize: "200% auto" }}>pricing.</span></h2>
-        <p className="sec-sub">Start free. Scale as you grow. No hidden fees, ever.</p>
+      {/* ══════════════════════════════
+           PRICING
+      ══════════════════════════════ */}
+      <section className="max-w-[1200px] mx-auto px-8 py-28">
+        <span className="inline-block bg-indigo-500/10 border border-indigo-500/20 rounded-full px-4 py-1.5 text-[11px] font-semibold text-indigo-400 tracking-[2px] uppercase mb-5" style={{ fontFamily: "'JetBrains Mono',monospace" }}>Pricing</span>
+        <h2 className="text-[clamp(28px,4vw,54px)] font-extrabold tracking-[-2px] leading-[1.08] text-white mb-4">
+          Simple, transparent<br />
+          <span className="grad-text">pricing.</span>
+        </h2>
+        <p className="text-base text-slate-600 font-normal leading-[1.75] max-w-[400px]">
+          Start free. Scale as you grow. No hidden fees, ever.
+        </p>
 
-        <div className="price-grid">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 max-w-[900px] md:max-w-none mx-auto">
           {PLANS.map(plan => (
-            <div key={plan.name} className={`pc ${plan.hot ? "hot" : ""}`}>
+            <div
+              key={plan.name}
+              className={`price-top-bar relative flex flex-col rounded-[24px] p-10 transition-all duration-300 hover:-translate-y-1.5 ${
+                plan.hot
+                  ? "border border-indigo-500/40 overflow-hidden"
+                  : "bg-white/[0.022] border border-white/[0.07] hover:border-indigo-500/25"
+              }`}
+              style={plan.hot ? {
+                background: "linear-gradient(135deg, rgba(99,102,241,0.08) 0%, rgba(168,85,247,0.05) 100%)",
+                boxShadow: "0 0 0 1px rgba(168,85,247,0.1), 0 24px 80px rgba(99,102,241,0.15)"
+              } : {}}
+            >
               {plan.hot && (
-                <div style={{ marginBottom: 20 }}>
-                  <span style={{ background: "rgba(99,102,241,.15)", border: "1px solid rgba(99,102,241,.3)", borderRadius: 100, padding: "4px 16px", fontSize: 11, color: "#818cf8", fontFamily: "'JetBrains Mono',monospace", letterSpacing: 1 }}>MOST POPULAR</span>
+                <div className="mb-5">
+                  <span className="bg-indigo-500/15 border border-indigo-500/30 rounded-full px-4 py-1 text-[11px] font-medium text-indigo-400 tracking-[1px]" style={{ fontFamily: "'JetBrains Mono',monospace" }}>
+                    MOST POPULAR
+                  </span>
                 </div>
               )}
-              <div className={`pc-name ${plan.hot ? "hot" : ""}`}>{plan.name}</div>
-              <div style={{ marginBottom: 8 }}>
-                <span className="pc-price">{plan.price}</span>
-                <span className="pc-per">/mo</span>
+              <div className={`text-[11px] tracking-[2px] uppercase mb-2.5 font-medium ${plan.hot ? "text-indigo-400" : "text-[#33335a]"}`} style={{ fontFamily: "'JetBrains Mono',monospace" }}>
+                {plan.name}
               </div>
-              <p className="pc-desc">
-                {plan.name === "Free" ? "For individuals exploring AI-generated websites." : plan.name === "Pro" ? "For founders and creators who ship fast." : "For agencies and teams building at scale."}
-              </p>
-              <div className="pc-div" />
-              <div className="pc-features">
+              <div className="flex items-end gap-1.5 mb-4">
+                <span className="text-[54px] font-extrabold tracking-[-3px] text-white leading-none">{plan.price}</span>
+                <span className="text-base text-slate-600 mb-1.5">/mo</span>
+              </div>
+              <p className="text-[14px] text-slate-600 leading-[1.7] mb-7">{plan.desc}</p>
+              <div className="h-px bg-white/[0.06] mb-7" />
+              <div className="flex flex-col gap-3.5 flex-1 mb-8">
                 {plan.features.map(f => (
-                  <div key={f} className="pf">
-                    <div className="pf-check">✓</div>
+                  <div key={f} className="flex items-center gap-3 text-[14px] text-slate-600">
+                    <div className="w-5 h-5 rounded-md bg-indigo-500/12 border border-indigo-500/20 flex items-center justify-center text-[10px] text-indigo-400 flex-shrink-0">✓</div>
                     {f}
                   </div>
                 ))}
               </div>
-              <button
-                className={plan.hot ? "btn-cta" : "btn-ghost"}
-                style={{ width: "100%", justifyContent: "center", padding: "14px", fontSize: 15 }}
-              >
-                {plan.cta}
-              </button>
+              {plan.hot ? (
+                <button className="grad-bg w-full py-3.5 text-[15px] font-semibold text-white rounded-xl border-none cursor-pointer transition-all duration-200 hover:-translate-y-0.5 relative overflow-hidden" style={{ boxShadow: "0 4px 24px rgba(99,102,241,0.4)" }}>
+                  <span className="absolute inset-0 bg-gradient-to-br from-white/[0.18] to-transparent" />
+                  <span className="relative">{plan.cta}</span>
+                </button>
+              ) : (
+                <button className="w-full py-3.5 text-[15px] font-medium text-slate-500 rounded-xl border border-white/10 hover:border-indigo-500/40 hover:text-slate-200 hover:bg-indigo-500/[0.07] bg-transparent cursor-pointer transition-all duration-200">
+                  {plan.cta}
+                </button>
+              )}
             </div>
           ))}
         </div>
-      </div>
+      </section>
 
-      {/* ─── CTA ─── */}
-      <div className="cta-wrap">
-        <div className="cta-radial" />
-        <div className="cta-box">
-          <h2 className="cta-title">
+      {/* ══════════════════════════════
+           CTA BANNER
+      ══════════════════════════════ */}
+      <div className="relative px-6 py-24 overflow-hidden">
+        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 70% 70% at 50% 50%, rgba(99,102,241,0.1) 0%, transparent 65%)" }} />
+        <div
+          className="cta-top-line relative z-10 max-w-[720px] mx-auto text-center rounded-[32px] px-14 py-20"
+          style={{
+            background: "rgba(255,255,255,0.025)",
+            border: "1px solid rgba(99,102,241,0.2)",
+            boxShadow: "0 0 0 1px rgba(168,85,247,0.06), 0 40px 120px rgba(99,102,241,0.12), inset 0 1px 0 rgba(255,255,255,0.06)"
+          }}
+        >
+          <h2 className="text-[clamp(28px,4.5vw,56px)] font-extrabold tracking-[-2px] leading-[1.1] text-white mb-4">
             Your next website starts<br />
-            <span className="grad-text" style={{ backgroundSize: "200% auto" }}>with one sentence.</span>
+            <span className="grad-text">with one sentence.</span>
           </h2>
-          <p className="cta-sub">Join 50,000+ builders who ship faster with ForgeAI.</p>
-          <div className="cta-btns">
-            <button className="btn-cta">
-              Start Building Free
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          <p className="text-base text-slate-600 leading-[1.75] mb-11">
+            Join 50,000+ builders who ship faster with ForgeAI.
+          </p>
+          <div className="flex gap-3.5 justify-center flex-wrap">
+            <button className="grad-bg flex items-center gap-2 text-[15px] font-semibold text-white px-10 py-3.5 rounded-[14px] border-none cursor-pointer transition-all duration-200 hover:-translate-y-0.5 relative overflow-hidden" style={{ boxShadow: "0 4px 32px rgba(99,102,241,0.45)" }}>
+              <span className="absolute inset-0 bg-gradient-to-br from-white/[0.18] to-transparent" />
+              <span className="relative flex items-center gap-2">
+                Start Building Free
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </span>
             </button>
-            <button className="btn-ghost" style={{ padding: "14px 32px", fontSize: 15 }}>View Showcase</button>
+            <button className="text-[15px] font-medium text-slate-500 px-8 py-3.5 rounded-[14px] border border-white/10 hover:border-indigo-500/40 hover:text-slate-200 hover:bg-indigo-500/[0.07] bg-transparent cursor-pointer transition-all duration-200">
+              View Showcase
+            </button>
           </div>
         </div>
       </div>
 
-      {/* ─── FOOTER ─── */}
-      <footer className="footer">
-        <div className="footer-in">
-          <div className="logo">
-            <div className="logo-mark" style={{ width: 30, height: 30, borderRadius: 8, fontSize: 15 }}><span>W</span></div>
-            <span className="logo-text" style={{ fontSize: 15 }}>Forge<em>AI</em></span>
+      {/* ══════════════════════════════
+           FOOTER
+      ══════════════════════════════ */}
+      <footer className="border-t border-white/[0.06] px-8 py-11">
+        <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+          <div className="flex items-center gap-2.5 cursor-pointer">
+            <div className="logo-icon relative w-8 h-8 rounded-[9px] flex items-center justify-center overflow-hidden flex-shrink-0">
+              <span className="relative z-10 text-[14px] font-bold text-white">W</span>
+            </div>
+            <span className="text-[15px] font-bold text-white tracking-tight">
+              Forge<em className="not-italic grad-text">AI</em>
+            </span>
           </div>
-          <div className="f-links">
+          <div className="flex gap-7 flex-wrap justify-center">
             {["Privacy", "Terms", "Status", "Blog", "Twitter", "GitHub"].map(l => (
-              <a key={l} className="f-link">{l}</a>
+              <a key={l} className="text-[13px] text-[#2a2a4a] hover:text-indigo-400 cursor-pointer transition-colors duration-200" style={{ fontFamily: "'JetBrains Mono',monospace" }}>{l}</a>
             ))}
           </div>
-          <span className="f-copy">© 2025 ForgeAI. All rights reserved.</span>
+          <span className="text-[12px] text-[#1e1e38]" style={{ fontFamily: "'JetBrains Mono',monospace" }}>© 2025 ForgeAI. All rights reserved.</span>
         </div>
       </footer>
     </div>
