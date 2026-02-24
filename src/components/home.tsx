@@ -71,7 +71,7 @@ export function Home() {
 
         <div className="relative z-10 flex flex-col items-center w-full">
 
-          {/* Badge */}
+          {/* Badg */}
           <div className="badge-border animate-fadeUp-1 inline-flex items-center gap-2.5 bg-indigo-500/10 border border-indigo-500/30 rounded-full px-5 py-1.5 mb-9">
             <span className="badge-dot-pulse w-[7px] h-[7px] rounded-full bg-indigo-500 flex-shrink-0" style={{ boxShadow: "0 0 10px #6366f1" }} />
             <span className="text-[13px] font-medium text-indigo-300 whitespace-nowrap" style={{ fontFamily: "'JetBrains Mono',monospace" }}>
