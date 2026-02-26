@@ -1,4 +1,3 @@
-import './home.css'
 import { useState, useEffect} from "react";
 
 //Header for website
