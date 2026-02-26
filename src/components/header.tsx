@@ -13,12 +13,12 @@ export function Header(){
   }, []);
     return (
     <>
-     <nav className={`fixed top-0 inset-x-0 z-50 transition-all duration-400 ${scrolled ? "bg-[#000008]/85 backdrop-blur-2xl border-b border-white/[0.06]" : ""}`}>
-        <div className="max-w-[1200px] mx-auto px-7 h-[68px] flex items-center justify-between gap-5">
+     <nav className={`fixed top-0 inset-x-0 z-50 transition-all duration-400 ${scrolled ? "bg-[#000008]/85 backdrop-blur-2xl border-b border-white/6" : ""}`}>
+        <div className="max-w-300 mx-auto px-7 h-17 flex items-center justify-between gap-5">
 
           {/* Logo */}
-          <div className="flex items-center gap-2.5 cursor-pointer flex-shrink-0">
-            <div className="logo-icon relative w-9 h-9 rounded-[10px] flex items-center justify-center overflow-hidden flex-shrink-0" style={{ boxShadow: "0 0 20px rgba(99,102,241,0.5)" }}>
+          <div className="flex items-center gap-2.5 cursor-pointer shrink-0">
+            <div className="logo-icon relative w-9 h-9 rounded-[10px] flex items-center justify-center overflow-hidden shrink-0" style={{ boxShadow: "0 0 20px rgba(99,102,241,0.5)" }}>
               <span className="relative z-10 text-lg font-bold text-white">W</span>
             </div>
             <span className="text-[17px] font-bold text-white tracking-tight">
@@ -35,11 +35,11 @@ export function Header(){
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-2.5">
-            <button className="text-sm font-medium text-slate-500 hover:text-slate-100 px-5 py-2.5 rounded-xl border border-white/10 hover:border-indigo-500/40 hover:bg-indigo-500/[0.08] transition-all duration-200 bg-transparent cursor-pointer">
+            <button className="text-sm font-medium text-slate-500 hover:text-slate-100 px-5 py-2.5 rounded-xl border border-white/10 hover:border-indigo-500/40 hover:bg-indigo-500/8 transition-all duration-200 bg-transparent cursor-pointer">
               Sign in
             </button>
             <button className="grad-bg text-sm font-semibold text-white px-6 py-2.5 rounded-xl border-none cursor-pointer transition-all duration-200 hover:-translate-y-0.5 relative overflow-hidden" style={{ boxShadow: "0 4px 24px rgba(99,102,241,0.4)" }}>
-              <span className="absolute inset-0 bg-gradient-to-br from-white/[0.18] to-transparent" />
+              <span className="absolute inset-0 bg-linear-to-br from-white/18 to-transparent" />
               <span className="relative">Get Started Free</span>
             </button>
           </div>
@@ -47,28 +47,28 @@ export function Header(){
           {/* Hamburger */}
           <button
             onClick={() => setMenuOpen(o => !o)}
-            className="md:hidden flex flex-col gap-[5px] p-2 border border-white/[0.08] hover:border-indigo-500/40 rounded-lg transition-colors duration-200 bg-transparent cursor-pointer"
+            className="md:hidden flex flex-col gap-1.25 p-2 border border-white/8 hover:border-indigo-500/40 rounded-lg transition-colors duration-200 bg-transparent cursor-pointer"
             aria-label="Toggle menu"
           >
-            <span className={`block w-5 h-[1.5px] bg-slate-500 rounded transition-all duration-300 ${menuOpen ? "translate-y-[6.5px] rotate-45 !bg-indigo-400" : ""}`} />
+            <span className={`block w-5 h-[1.5px] bg-slate-500 rounded transition-all duration-300 ${menuOpen ? "translate-y-[6.5px] rotate-45 bg-indigo-400!" : ""}`} />
             <span className={`block w-5 h-[1.5px] bg-slate-500 rounded transition-all duration-300 ${menuOpen ? "opacity-0 scale-x-0" : ""}`} />
-            <span className={`block w-5 h-[1.5px] bg-slate-500 rounded transition-all duration-300 ${menuOpen ? "-translate-y-[6.5px] -rotate-45 !bg-indigo-400" : ""}`} />
+            <span className={`block w-5 h-[1.5px] bg-slate-500 rounded transition-all duration-300 ${menuOpen ? "-translate-y-[6.5px] -rotate-45 bg-indigo-400!" : ""}`} />
           </button>
         </div>
       </nav>
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="mob-menu fixed inset-x-0 top-[68px] z-40 bg-[#000008]/97 backdrop-blur-3xl border-b border-white/[0.06] flex flex-col px-6 pb-8 pt-4 md:hidden">
+        <div className="mob-menu fixed inset-x-0 top-17 z-40 bg-[#000008]/97 backdrop-blur-3xl border-b border-white/6 flex flex-col px-6 pb-8 pt-4 md:hidden">
           {["Features", "How It Works", "Pricing", "Showcase"].map(l => (
-            <span key={l} onClick={() => setMenuOpen(false)} className="text-base font-medium text-slate-500 hover:text-slate-100 py-4 border-b border-white/[0.05] cursor-pointer transition-colors duration-200 last:border-none">
+            <span key={l} onClick={() => setMenuOpen(false)} className="text-base font-medium text-slate-500 hover:text-slate-100 py-4 border-b border-white/5 cursor-pointer transition-colors duration-200 last:border-none">
               {l}
             </span>
           ))}
           <div className="flex flex-col gap-3 pt-6">
             <button className="w-full text-[15px] font-medium text-slate-400 py-3.5 rounded-xl border border-white/10 bg-transparent cursor-pointer">Sign in</button>
             <button className="grad-bg w-full text-[15px] font-semibold text-white py-3.5 rounded-xl border-none cursor-pointer relative overflow-hidden" style={{ boxShadow: "0 4px 24px rgba(99,102,241,0.4)" }}>
-              <span className="absolute inset-0 bg-gradient-to-br from-white/[0.18] to-transparent" />
+              <span className="absolute inset-0 bg-linear-to-br from-white/18 to-transparent" />
               <span className="relative">Get Started Free</span>
             </button>
           </div>
