@@ -1,6 +1,7 @@
 import { useState, useEffect, type RefObject} from "react";
 import gsap from "gsap";
 import ScrollToPlugin from "gsap/ScrollToPlugin";
+import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(ScrollToPlugin);
 
@@ -33,13 +34,34 @@ export function Header({pricingRef, howItWorksRef, featuresRef, showCaseRef}: he
     });
   };
 
+  useGSAP(()=>{
+    gsap.from("#LOGO, #NAVACCOUNT", {
+      y:-15,
+      opacity:0,
+      delay:0.8,
+      duration:1
+    })
+
+    const tl = gsap.timeline();
+
+    tl.from("#NAVLINK", {
+      y:-15,
+      opacity:0,
+      delay:0.8,
+      duration:1,
+      stagger:0.15
+    })
+
+   
+  })
+
     return (
     <>
      <nav className={`fixed top-0 inset-x-0 z-50 transition-all duration-400 ${scrolled ? "bg-[#000008]/85 backdrop-blur-2xl border-b border-white/6" : ""}`}>
         <div className="max-w-300 mx-auto px-7 h-17 flex items-center justify-between gap-5">
 
           {/* Logo */}
-          <div className="flex items-center gap-2.5 cursor-pointer shrink-0">
+          <div id="LOGO" className="flex items-center gap-2.5 cursor-pointer shrink-0">
             <div className="logo-icon relative w-9 h-9 rounded-[10px] flex items-center justify-center overflow-hidden shrink-0" style={{ boxShadow: "0 0 20px rgba(99,102,241,0.5)" }}>
               <span className="relative z-10 text-lg font-bold text-white">W</span>
             </div>
@@ -50,14 +72,14 @@ export function Header({pricingRef, howItWorksRef, featuresRef, showCaseRef}: he
 
           {/* Desktop Nav Links */}
           <div className="hidden md:flex items-center gap-9">
-              <span onClick={()=>{scrollTo(featuresRef)}} className="text-sm font-medium text-slate-500 hover:text-slate-100 cursor-pointer transition-colors duration-200">Features</span>
-              <span onClick={()=>{scrollTo(howItWorksRef)}} className="text-sm font-medium text-slate-500 hover:text-slate-100 cursor-pointer transition-colors duration-200">How It Works</span>
-              <span onClick={()=>{scrollTo(pricingRef)}} className="text-sm font-medium text-slate-500 hover:text-slate-100 cursor-pointer transition-colors duration-200">Pricing</span>
-              <span onClick={()=>{scrollTo(showCaseRef)}} className="text-sm font-medium text-slate-500 hover:text-slate-100 cursor-pointer transition-colors duration-200">Showcase</span>
+              <span id="NAVLINK" onClick={()=>{scrollTo(featuresRef)}} className="text-sm font-medium text-slate-500 hover:text-slate-100 cursor-pointer transition-colors duration-200">Features</span>
+              <span id="NAVLINK" onClick={()=>{scrollTo(howItWorksRef)}} className="text-sm font-medium text-slate-500 hover:text-slate-100 cursor-pointer transition-colors duration-200">How It Works</span>
+              <span id="NAVLINK" onClick={()=>{scrollTo(pricingRef)}} className="text-sm font-medium text-slate-500 hover:text-slate-100 cursor-pointer transition-colors duration-200">Pricing</span>
+              <span id="NAVLINK" onClick={()=>{scrollTo(showCaseRef)}} className="text-sm font-medium text-slate-500 hover:text-slate-100 cursor-pointer transition-colors duration-200">Showcase</span>
           </div>
 
           {/* Desktop Actions */}
-          <div className="hidden md:flex items-center gap-2.5">
+          <div id="NAVACCOUNT" className="hidden md:flex items-center gap-2.5">
             <button className="text-sm font-medium text-slate-500 hover:text-slate-100 px-5 py-2.5 rounded-xl border border-white/10 hover:border-indigo-500/40 hover:bg-indigo-500/8 transition-all duration-200 bg-transparent cursor-pointer">
               Sign in
             </button>
@@ -89,10 +111,10 @@ export function Header({pricingRef, howItWorksRef, featuresRef, showCaseRef}: he
             </span>
           ))}
           <div className="flex flex-col gap-3 pt-6">
-            <button className="w-full text-[15px] font-medium text-slate-400 py-3.5 rounded-xl border border-white/10 bg-transparent cursor-pointer">Sign in</button>
+            <button  className=" NAVACCOUNT w-full text-[15px] font-medium text-slate-400 py-3.5 rounded-xl border border-white/10 bg-transparent cursor-pointer">Sign in</button>
             <button className="grad-bg w-full text-[15px] font-semibold text-white py-3.5 rounded-xl border-none cursor-pointer relative overflow-hidden" style={{ boxShadow: "0 4px 24px rgba(99,102,241,0.4)" }}>
               <span className="absolute inset-0 bg-linear-to-br from-white/18 to-transparent" />
-              <span className="relative">Get Started Free</span>
+              <span  className=" NAVACCOUNT relative">Get Started Free</span>
             </button>
           </div>
         </div>
