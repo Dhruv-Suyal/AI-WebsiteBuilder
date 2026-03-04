@@ -1,15 +1,37 @@
-import { useState, useEffect} from "react";
+import { useState, useEffect, type RefObject} from "react";
+import gsap from "gsap";
+import ScrollToPlugin from "gsap/ScrollToPlugin";
 
+gsap.registerPlugin(ScrollToPlugin);
+
+type headerProps = {
+  pricingRef: RefObject<HTMLDivElement | null>;
+  howItWorksRef: RefObject<HTMLDivElement | null>;
+  featuresRef: RefObject<HTMLDivElement | null>;
+}
 //Header for website
-export function Header(){
+export function Header({pricingRef, howItWorksRef, featuresRef}: headerProps){
     const [scrolled, setScrolled] = useState(false);
-     const [menuOpen, setMenuOpen] = useState(false);
+    const [menuOpen, setMenuOpen] = useState(false);
      
     useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 30);
     window.addEventListener("scroll", fn);
     return () => window.removeEventListener("scroll", fn);
   }, []);
+
+  function scrollTo(elementRef: RefObject<HTMLDivElement | null>){
+    if(!elementRef.current) return;
+
+    gsap.to(window, {
+      duration: 1/2,
+      scrollTo:{
+        y: elementRef.current,
+        offsetY:80
+      }
+    });
+  };
+
     return (
     <>
      <nav className={`fixed top-0 inset-x-0 z-50 transition-all duration-400 ${scrolled ? "bg-[#000008]/85 backdrop-blur-2xl border-b border-white/6" : ""}`}>
@@ -27,9 +49,10 @@ export function Header(){
 
           {/* Desktop Nav Links */}
           <div className="hidden md:flex items-center gap-9">
-            {["Features", "How It Works", "Pricing", "Showcase"].map(l => (
-              <span key={l} className="text-sm font-medium text-slate-500 hover:text-slate-100 cursor-pointer transition-colors duration-200">{l}</span>
-            ))}
+              <span onClick={()=>{scrollTo(featuresRef)}} className="text-sm font-medium text-slate-500 hover:text-slate-100 cursor-pointer transition-colors duration-200">Features</span>
+              <span onClick={()=>{scrollTo(howItWorksRef)}} className="text-sm font-medium text-slate-500 hover:text-slate-100 cursor-pointer transition-colors duration-200">How It Works</span>
+              <span onClick={()=>{scrollTo(pricingRef)}} className="text-sm font-medium text-slate-500 hover:text-slate-100 cursor-pointer transition-colors duration-200">Pricing</span>
+              <span className="text-sm font-medium text-slate-500 hover:text-slate-100 cursor-pointer transition-colors duration-200">Showcase</span>
           </div>
 
           {/* Desktop Actions */}

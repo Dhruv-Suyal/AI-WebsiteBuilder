@@ -45,6 +45,9 @@ export function Home() {
   const [prompt, setPrompt] = useState("");
   const [focused, setFocused] = useState(false);
   const textRef = useRef<HTMLTextAreaElement>(null);
+  const pricingRef = useRef<HTMLDivElement | null>(null);
+  const featuresRef = useRef<HTMLDivElement | null>(null);
+  const howItWorksRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const t = setInterval(() => {
@@ -56,7 +59,7 @@ export function Home() {
 
   return (
     <div className="min-h-screen bg-[#000008] text-slate-200 overflow-x-hidden" style={{ fontFamily: "'Sora', sans-serif" }}>
-        <Header/>
+        <Header pricingRef={pricingRef} howItWorksRef={howItWorksRef} featuresRef={featuresRef}  />
       <section className="relative min-h-screen flex flex-col items-center justify-center pt-32 pb-20 px-5 overflow-hidden">
         <div className="hero-grid" />
         <div className="orb-1" />
@@ -174,7 +177,7 @@ export function Home() {
       {/* ══════════════════════════════
            FEATURES
       ══════════════════════════════ */}
-      <section className="max-w-300 mx-auto px-8 py-28">
+      <section ref={featuresRef} className="max-w-300 mx-auto px-8 py-28">
         <span className="inline-block bg-indigo-500/10 border border-indigo-500/20 rounded-full px-4 py-1.5 text-[11px] font-semibold text-indigo-400 tracking-[2px] uppercase mb-5" style={{ fontFamily: "'JetBrains Mono',monospace" }}>Features</span>
         <h2 className="text-[clamp(28px,4vw,54px)] font-extrabold tracking-[-2px] leading-[1.08] text-white mb-4">
           Everything you need.<br />
@@ -204,7 +207,7 @@ export function Home() {
       {/* ══════════════════════════════
            HOW IT WORKS
       ══════════════════════════════ */}
-      <div className="bg-white/[0.012] border-t border-b border-white/6">
+      <div ref={howItWorksRef} className="bg-white/[0.012] border-t border-b border-white/6">
         <section className="max-w-300 mx-auto px-8 py-28">
           <span className="inline-block bg-indigo-500/10 border border-indigo-500/20 rounded-full px-4 py-1.5 text-[11px] font-semibold text-indigo-400 tracking-[2px] uppercase mb-5" style={{ fontFamily: "'JetBrains Mono',monospace" }}>How It Works</span>
           <h2 className="text-[clamp(28px,4vw,54px)] font-extrabold tracking-[-2px] leading-[1.08] text-white mb-4">
@@ -280,7 +283,7 @@ export function Home() {
       {/* ══════════════════════════════
            PRICING
       ══════════════════════════════ */}
-      <section className="max-w-300 mx-auto px-8 py-28">
+      <section ref={pricingRef} className="max-w-300 mx-auto px-8 py-28">
         <span className="inline-block bg-indigo-500/10 border border-indigo-500/20 rounded-full px-4 py-1.5 text-[11px] font-semibold text-indigo-400 tracking-[2px] uppercase mb-5" style={{ fontFamily: "'JetBrains Mono',monospace" }}>Pricing</span>
         <h2 className="text-[clamp(28px,4vw,54px)] font-extrabold tracking-[-2px] leading-[1.08] text-white mb-4">
           Simple, transparent<br />
