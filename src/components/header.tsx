@@ -8,9 +8,10 @@ type headerProps = {
   pricingRef: RefObject<HTMLDivElement | null>;
   howItWorksRef: RefObject<HTMLDivElement | null>;
   featuresRef: RefObject<HTMLDivElement | null>;
+  showCaseRef: RefObject<HTMLDivElement | null>;
 }
 //Header for website
-export function Header({pricingRef, howItWorksRef, featuresRef}: headerProps){
+export function Header({pricingRef, howItWorksRef, featuresRef, showCaseRef}: headerProps){
     const [scrolled, setScrolled] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
      
@@ -27,7 +28,7 @@ export function Header({pricingRef, howItWorksRef, featuresRef}: headerProps){
       duration: 1/2,
       scrollTo:{
         y: elementRef.current,
-        offsetY:80
+        offsetY:120
       }
     });
   };
@@ -52,7 +53,7 @@ export function Header({pricingRef, howItWorksRef, featuresRef}: headerProps){
               <span onClick={()=>{scrollTo(featuresRef)}} className="text-sm font-medium text-slate-500 hover:text-slate-100 cursor-pointer transition-colors duration-200">Features</span>
               <span onClick={()=>{scrollTo(howItWorksRef)}} className="text-sm font-medium text-slate-500 hover:text-slate-100 cursor-pointer transition-colors duration-200">How It Works</span>
               <span onClick={()=>{scrollTo(pricingRef)}} className="text-sm font-medium text-slate-500 hover:text-slate-100 cursor-pointer transition-colors duration-200">Pricing</span>
-              <span className="text-sm font-medium text-slate-500 hover:text-slate-100 cursor-pointer transition-colors duration-200">Showcase</span>
+              <span onClick={()=>{scrollTo(showCaseRef)}} className="text-sm font-medium text-slate-500 hover:text-slate-100 cursor-pointer transition-colors duration-200">Showcase</span>
           </div>
 
           {/* Desktop Actions */}
