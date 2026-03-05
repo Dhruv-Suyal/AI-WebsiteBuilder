@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import "./home.css";
 import { Header } from "../../components/header";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
 const WORDS = ["stunning", "powerful", "blazing-fast", "pixel-perfect", "production-ready"];
 
@@ -58,6 +60,38 @@ export function Home() {
     return () => clearInterval(t);
   }, []);
 
+  useGSAP(()=>{
+    gsap.from(".BADGE",{
+        y:-100,
+        opacity:0,
+        delay:1,
+        duration:1
+    })
+
+     gsap.from(".HEADLINE",{
+        x:-140,
+        opacity:0,
+        delay:1,
+        duration:1
+    })
+
+     gsap.from(".SUBHEADING",{
+        x:140,
+        opacity:0,
+        delay:1,
+        duration:1
+    })
+
+    gsap.from(".PROMPTBOX",{
+        y:140,
+        opacity:0,
+        delay:1,
+        duration:1
+    })
+
+
+  })
+
   return (
     <div className="min-h-screen bg-[#000008] text-slate-200 overflow-x-hidden" style={{ fontFamily: "'Sora', sans-serif" }}>
         <Header pricingRef={pricingRef} howItWorksRef={howItWorksRef} featuresRef={featuresRef} showCaseRef={showCaseRef} />
@@ -70,7 +104,7 @@ export function Home() {
         <div className="relative z-10 flex flex-col items-center w-full">
 
           {/* Badge */}
-          <div className="badge-border animate-fadeUp-1 inline-flex items-center gap-2.5 bg-indigo-500/10 border border-indigo-500/30 rounded-full px-5 py-1.5 mb-9">
+          <div className=" BADGE badge-border animate-fadeUp-1 inline-flex items-center gap-2.5 bg-indigo-500/10 border border-indigo-500/30 rounded-full px-5 py-1.5 mb-9">
             <span className="badge-dot-pulse w-1.75 h-1.75 rounded-full bg-indigo-500 shrink-0" style={{ boxShadow: "0 0 10px #6366f1" }} />
             <span className="text-[13px] font-medium text-indigo-300 whitespace-nowrap" style={{ fontFamily: "'JetBrains Mono',monospace" }}>
               Now in public beta — 50,000+ sites built
@@ -78,6 +112,7 @@ export function Home() {
           </div>
 
           {/* Headline */}
+          <div className="HEADLINE">
           <h1 className="animate-fadeUp-2 text-[clamp(40px,6.5vw,84px)] font-extrabold text-center leading-[1.07] tracking-[-2.5px] text-white mb-6">
             Build{" "}
             <span className={`grad-text inline-block ${wordVisible ? "word-in" : "word-out"}`}>
@@ -86,14 +121,18 @@ export function Home() {
             <br />
             websites from a prompt.
           </h1>
+          </div>
 
           {/* Sub */}
-          <p className="animate-fadeUp-3 text-center text-[clamp(15px,1.8vw,19px)] text-slate-600 font-normal leading-[1.8] max-w-125 mx-auto mb-12">
+          <div className="SUBHEADING">
+          <p className=" animate-fadeUp-3 text-center text-[clamp(15px,1.8vw,19px)] text-slate-600 font-normal leading-[1.8] max-w-125 mx-auto mb-12">
             Describe your website in plain English. Our AI generates a fully functional, production-ready site — in seconds.
           </p>
+          </div>
 
           {/* Prompt Box */}
-          <div className="animate-fadeUp-4 w-full max-w-175">
+          <div className="PROMPTBOX">
+          <div id=" PROMPTBOX" className=" animate-fadeUp-4 w-full max-w-175">
             <div
               className={`rounded-[20px] overflow-hidden transition-all duration-300 ${focused ? "prompt-glow border border-indigo-500/55" : "border border-white/8"}`}
               style={{ background: "rgba(255,255,255,0.025)", boxShadow: focused ? undefined : "0 8px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06)" }}
@@ -151,6 +190,7 @@ export function Home() {
                 </button>
               ))}
             </div>
+          </div>
           </div>
         </div>
 

@@ -35,24 +35,22 @@ export function Header({pricingRef, howItWorksRef, featuresRef, showCaseRef}: he
   };
 
   useGSAP(()=>{
-    gsap.from("#LOGO, #NAVACCOUNT", {
-      y:-15,
-      opacity:0,
-      delay:0.8,
-      duration:1
-    })
+      gsap.from("#LOGO, #NAVACCOUNT", {
+        y:-15,
+        opacity:0,
+        delay:0.8,
+        duration:1
+      })
 
-    const tl = gsap.timeline();
+      const tl = gsap.timeline();
 
-    tl.from("#NAVLINK", {
-      y:-15,
-      opacity:0,
-      delay:0.8,
-      duration:1,
-      stagger:0.15
-    })
-
-   
+      tl.from("#NAVLINK", {
+        y:-15,
+        opacity:0,
+        delay:0.8,
+        duration:1,
+        stagger:0.15
+      })
   })
 
     return (
