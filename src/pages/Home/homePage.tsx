@@ -60,6 +60,8 @@ export function Home() {
     return () => clearInterval(t);
   }, []);
 
+ // ANIMATION
+
   useGSAP(()=>{
     gsap.from(".BADGE",{
         y:-100,

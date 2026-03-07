@@ -24,7 +24,7 @@ export function Header({pricingRef, howItWorksRef, featuresRef, showCaseRef}: he
 
   function scrollTo(elementRef: RefObject<HTMLDivElement | null>){
     if(!elementRef.current) return;
-
+    setMenuOpen(false)
     gsap.to(window, {
       duration: 1/2,
       scrollTo:{
@@ -35,7 +35,7 @@ export function Header({pricingRef, howItWorksRef, featuresRef, showCaseRef}: he
   };
 
   useGSAP(()=>{
-      gsap.from("#LOGO, #NAVACCOUNT", {
+      gsap.from("#LOGO, #NAVACCOUNT,.HAMBURGER", {
         y:-15,
         opacity:0,
         delay:0.8,
@@ -51,6 +51,7 @@ export function Header({pricingRef, howItWorksRef, featuresRef, showCaseRef}: he
         duration:1,
         stagger:0.15
       })
+      
   })
 
     return (
@@ -90,7 +91,7 @@ export function Header({pricingRef, howItWorksRef, featuresRef, showCaseRef}: he
           {/* Hamburger */}
           <button
             onClick={() => setMenuOpen(o => !o)}
-            className="md:hidden flex flex-col gap-1.25 p-2 border border-white/8 hover:border-indigo-500/40 rounded-lg transition-colors duration-200 bg-transparent cursor-pointer"
+            className="HAMBURGER md:hidden flex flex-col gap-1.25 p-2 border border-white/8 hover:border-indigo-500/40 rounded-lg transition-colors duration-200 bg-transparent cursor-pointer"
             aria-label="Toggle menu"
           >
             <span className={`block w-5 h-[1.5px] bg-slate-500 rounded transition-all duration-300 ${menuOpen ? "translate-y-[6.5px] rotate-45 bg-indigo-400!" : ""}`} />
@@ -102,12 +103,20 @@ export function Header({pricingRef, howItWorksRef, featuresRef, showCaseRef}: he
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="mob-menu fixed inset-x-0 top-17 z-40 bg-[#000008]/97 backdrop-blur-3xl border-b border-white/6 flex flex-col px-6 pb-8 pt-4 md:hidden">
-          {["Features", "How It Works", "Pricing", "Showcase"].map(l => (
-            <span key={l} onClick={() => setMenuOpen(false)} className="text-base font-medium text-slate-500 hover:text-slate-100 py-4 border-b border-white/5 cursor-pointer transition-colors duration-200 last:border-none">
-              {l}
+        <div className="MOBILEMENU">
+        <div className="mob-menu MOBILEMENU fixed inset-x-0 top-17 z-40 bg-[#000008]/97 backdrop-blur-3xl border-b border-white/6 flex flex-col px-6 pb-8 pt-4 md:hidden">
+            <span onClick={() => scrollTo(featuresRef)} className="text-base font-medium text-slate-500 hover:text-slate-100 py-4 border-b border-white/5 cursor-pointer transition-colors duration-200 last:border-none">
+              Features
             </span>
-          ))}
+            <span onClick={() => scrollTo(howItWorksRef)} className="text-base font-medium text-slate-500 hover:text-slate-100 py-4 border-b border-white/5 cursor-pointer transition-colors duration-200 last:border-none">
+              How It Works
+            </span>
+            <span onClick={() => scrollTo(pricingRef)} className="text-base font-medium text-slate-500 hover:text-slate-100 py-4 border-b border-white/5 cursor-pointer transition-colors duration-200 last:border-none">
+              Pricing
+            </span>
+            <span onClick={() => scrollTo(showCaseRef)} className="text-base font-medium text-slate-500 hover:text-slate-100 py-4 border-b border-white/5 cursor-pointer transition-colors duration-200 last:border-none">
+              Showcase
+            </span>
           <div className="flex flex-col gap-3 pt-6">
             <button  className=" NAVACCOUNT w-full text-[15px] font-medium text-slate-400 py-3.5 rounded-xl border border-white/10 bg-transparent cursor-pointer">Sign in</button>
             <button className="grad-bg w-full text-[15px] font-semibold text-white py-3.5 rounded-xl border-none cursor-pointer relative overflow-hidden" style={{ boxShadow: "0 4px 24px rgba(99,102,241,0.4)" }}>
@@ -115,6 +124,7 @@ export function Header({pricingRef, howItWorksRef, featuresRef, showCaseRef}: he
               <span  className=" NAVACCOUNT relative">Get Started Free</span>
             </button>
           </div>
+        </div>
         </div>
       )}
     </>
