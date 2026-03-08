@@ -11,7 +11,7 @@ type headerProps = {
   featuresRef: RefObject<HTMLDivElement | null>;
   showCaseRef: RefObject<HTMLDivElement | null>;
 }
-//Header for website
+//Header for websit
 export function Header({pricingRef, howItWorksRef, featuresRef, showCaseRef}: headerProps){
     const [scrolled, setScrolled] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
