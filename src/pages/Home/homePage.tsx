@@ -3,6 +3,9 @@ import "./home.css";
 import { Header } from "../../components/header";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import ScrollTrigger from "gsap/ScrollTrigger";
+gsap.registerPlugin(ScrollTrigger)
+
 
 const WORDS = ["stunning", "powerful", "blazing-fast", "pixel-perfect", "production-ready"];
 
@@ -61,39 +64,121 @@ export function Home() {
   }, []);
 
  // ANIMATION
+ useGSAP(() => {
+  // ── HERO ──
+  gsap.from(".BADGE",      { y: -100, opacity: 0, delay: 1, duration: 1 });
+  gsap.from(".HEADLINE",   { x: -140, opacity: 0, delay: 1, duration: 1 });
+  gsap.from(".SUBHEADING", { x:  140, opacity: 0, delay: 1, duration: 1 });
+  gsap.from(".PROMPTBOX",  { y:  140, opacity: 0, delay: 1, duration: 1 });
 
-  useGSAP(()=>{
-    gsap.from(".BADGE",{
-        y:-100,
-        opacity:0,
-        delay:1,
-        duration:1
-    })
+  // ── STATS ──
+  gsap.from(".STATBARELEM", {
+    y: 120, opacity: 0, stagger: 0.15,
+    scrollTrigger: {
+      trigger: ".STATBAR",
+      start: "top 85%",
+      end: "top 40%",
+      scrub: 1,
+      once: true,
+    }
+  });
 
-     gsap.from(".HEADLINE",{
-        x:-140,
-        opacity:0,
-        delay:1,
-        duration:1
-    })
+  // ── FEATURES HEADING ──
+  gsap.from(".FEATURESHEADING", {
+    x: -140, opacity: 0,
+    scrollTrigger: {
+      trigger: ".FEATURESHEADING",
+      start: "top 90%",
+      end: "top 60%",
+      scrub: 1,
+      once: true,
+    }
+  });
 
-     gsap.from(".SUBHEADING",{
-        x:140,
-        opacity:0,
-        delay:1,
-        duration:1
-    })
+  // ── FEATURES GRID ──
+  gsap.from(".FEATUREGRID", {
+    y: 200, opacity: 0,
+    scrollTrigger: {
+      trigger: ".FEATUREGRID",
+      start: "top 90%",
+      end: "top 40%",
+      scrub: 1,
+      once: true,
+    }
+  });
 
-    gsap.from(".PROMPTBOX",{
-        y:140,
-        opacity:0,
-        delay:1,
-        duration:1
-    })
+  // ── HOW IT WORKS HEADING ──
+  gsap.from(".HOWITWORKSHEADING", {
+    x: -200, opacity: 0,
+    scrollTrigger: {
+      trigger: ".HOWITWORKSANIMATIONSTART",
+      start: "top 90%",
+      end: "top 60%",
+      scrub: 1,
+      once: true,
+    }
+  });
 
+  // ── HOW IT WORKS STEPS ──
+  gsap.from(".HOWITWORKSTEP", {
+    y: 200, opacity: 0,
+    scrollTrigger: {
+      trigger: ".HOWITWORKSANIMATIONSTART",
+      start: "top 70%",
+      end: "top 20%",
+      scrub: 1,
+      once: true,
+    }
+  });
 
-  })
+  // ── PREVIEW ──
+  gsap.from(".PREVIEW", {
+    y: 200, opacity: 0,
+    scrollTrigger: {
+      trigger: ".HOWITWORKSTEP",
+      start: "top 70%",
+      end: "bottom 30%",
+      scrub: 1,
+      once: true,
+    }
+  });
 
+  // ── PRICING HEADING ──
+  gsap.from(".PRICINGHEADING", {
+    x: -200, opacity: 0,
+    scrollTrigger: {
+      trigger: ".PRICINGHEADING",
+      start: "top 90%",
+      end: "top 60%",
+      scrub: 1,
+      once: true,
+    }
+  });
+
+  // ── PRICING GRID ──
+  gsap.from(".PRICINGGRID", {
+    y: 300, opacity: 0,
+    scrollTrigger: {
+      trigger: ".PRICINGHEADING",
+      start: "top 70%",
+      end: "top 10%",
+      scrub: 1,
+      once: true,
+    }
+  });
+
+  // ── BANNER ──
+  gsap.from(".BANNER", {
+    y: 300, opacity: 0,
+    scrollTrigger: {
+      trigger: ".BANNER",
+      start: "top 80%",
+      end: "top 40%",
+      scrub: 1,
+      once: true,
+    }
+  });
+});
   return (
     <div className="min-h-screen bg-[#000008] text-slate-200 overflow-x-hidden" style={{ fontFamily: "'Sora', sans-serif" }}>
         <Header pricingRef={pricingRef} howItWorksRef={howItWorksRef} featuresRef={featuresRef} showCaseRef={showCaseRef} />
@@ -206,10 +291,10 @@ export function Home() {
       {/* ══════════════════════════════
            STATS
       ══════════════════════════════ */}
-      <div className="border-t border-white/6 border-b bg-white/1.5">
+      <div className="border-t border-white/6 border-b bg-white/1.5 STATBAR">
         <div className="max-w-240 mx-auto px-8 py-14 grid grid-cols-2 md:grid-cols-4 gap-6">
           {STATS.map(({ value, label }) => (
-            <div key={label} className="text-center">
+            <div key={label} className="text-center STATBARELEM">
               <div className="grad-text text-[clamp(36px,4vw,56px)] font-extrabold tracking-[-2px] leading-none">{value}</div>
               <div className="mt-2.5 text-[12px] text-[#333358] tracking-[0.5px]" style={{ fontFamily: "'JetBrains Mono',monospace" }}>{label}</div>
             </div>
@@ -221,6 +306,7 @@ export function Home() {
            FEATURES
       ══════════════════════════════ */}
       <section ref={featuresRef} className="max-w-300 mx-auto px-8 py-28 pt-10">
+        <div className=" FEATURESHEADING">
         <span className="inline-block bg-indigo-500/10 border border-indigo-500/20 rounded-full px-4 py-1.5 text-[11px] font-semibold text-indigo-400 tracking-[2px] uppercase mb-5" style={{ fontFamily: "'JetBrains Mono',monospace" }}>Features</span>
         <h2 className="text-[clamp(28px,4vw,54px)] font-extrabold tracking-[-2px] leading-[1.08] text-white mb-4">
           Everything you need.<br />
@@ -229,8 +315,8 @@ export function Home() {
         <p className="text-base text-slate-600 font-normal leading-[1.75] max-w-105">
           ForgeAI handles design, code, and deployment — so you can focus on building the product.
         </p>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-16">
+        </div>
+        <div className="grid FEATUREGRID grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-16">
           {FEATURES.map((f, i) => (
             <div
               key={i}
@@ -252,13 +338,16 @@ export function Home() {
       ══════════════════════════════ */}
       <div ref={howItWorksRef} className="bg-white/[0.012] border-t border-b border-white/6">
         <section className="max-w-300 mx-auto px-8 py-28 pt-10">
-          <span className="inline-block bg-indigo-500/10 border border-indigo-500/20 rounded-full px-4 py-1.5 text-[11px] font-semibold text-indigo-400 tracking-[2px] uppercase mb-5" style={{ fontFamily: "'JetBrains Mono',monospace" }}>How It Works</span>
+          <div className=" HOWITWORKSHEADING">
+          <span className="HOWITWORKSANIMATIONSTART inline-block bg-indigo-500/10 border border-indigo-500/20 rounded-full px-4 py-1.5 text-[11px] font-semibold text-indigo-400 tracking-[2px] uppercase mb-5" style={{ fontFamily: "'JetBrains Mono',monospace" }}>How It Works</span>
           <h2 className="text-[clamp(28px,4vw,54px)] font-extrabold tracking-[-2px] leading-[1.08] text-white mb-4">
             Three steps to a<br />
             <span className="grad-text">live website.</span>
           </h2>
+          </div>
 
           {/* Steps */}
+          <div className="HOWITWORKSTEP">
           <div className="steps-connector relative grid grid-cols-1 md:grid-cols-3 gap-12 mt-16">
             {STEPS.map((s, i) => (
               <div key={i} className="flex flex-col items-center text-center px-3">
@@ -269,12 +358,14 @@ export function Home() {
                   {s.num}
                 </div>
                 <div className="text-[17px] font-bold text-slate-200 mb-3 tracking-[-0.2px]">{s.title}</div>
-                <div className="text-[14px] text-slate-600 leading-[1.8]">{s.desc}</div>
+                <div className="text-[14px] text-slate-600 leading-[1.8] PREVIEWSTART">{s.desc}</div>
               </div>
             ))}
           </div>
+          </div>
 
           {/* Preview Window */}
+          <div className="PREVIEW">
           <div className="preview-top-line relative bg-white/2 border border-white/[0.07] rounded-3xl overflow-hidden mt-16" style={{ boxShadow: "0 40px 140px rgba(0,0,0,0.6)" }}>
             {/* Browser Bar */}
             <div className="flex items-center gap-3.5 px-5 py-3.5 border-b border-white/6 bg-white/2">
@@ -320,6 +411,7 @@ export function Home() {
               </div>
             </div>
           </div>
+          </div>
         </section>
       </div>
 
@@ -327,6 +419,7 @@ export function Home() {
            PRICING
       ══════════════════════════════ */}
       <section ref={pricingRef} className="max-w-300 mx-auto px-8 py-28 pt-12">
+        <div className="PRICINGHEADING">
         <span className="inline-block bg-indigo-500/10 border border-indigo-500/20 rounded-full px-4 py-1.5 text-[11px] font-semibold text-indigo-400 tracking-[2px] uppercase mb-5" style={{ fontFamily: "'JetBrains Mono',monospace" }}>Pricing</span>
         <h2 className="text-[clamp(28px,4vw,54px)] font-extrabold tracking-[-2px] leading-[1.08] text-white mb-4">
           Simple, transparent<br />
@@ -335,8 +428,9 @@ export function Home() {
         <p className="text-base text-slate-600 font-normal leading-[1.75] max-w-100">
           Start free. Scale as you grow. No hidden fees, ever.
         </p>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 max-w-225 md:max-w-none mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 max-w-225 md:max-w-none mx-auto PRICINGGRID">
           {PLANS.map(plan => (
             <div
               key={plan.name}
@@ -375,7 +469,7 @@ export function Home() {
                 ))}
               </div>
               {plan.hot ? (
-                <button className="grad-bg w-full py-3.5 text-[15px] font-semibold text-white rounded-xl border-none cursor-pointer transition-all duration-200 hover:-translate-y-0.5 relative overflow-hidden" style={{ boxShadow: "0 4px 24px rgba(99,102,241,0.4)" }}>
+                <button className="BANNERSTART grad-bg w-full py-3.5 text-[15px] font-semibold text-white rounded-xl border-none cursor-pointer transition-all duration-200 hover:-translate-y-0.5 relative overflow-hidden" style={{ boxShadow: "0 4px 24px rgba(99,102,241,0.4)" }}>
                   <span className="absolute inset-0 bg-linear-to-br from-white/18 to-transparent" />
                   <span className="relative">{plan.cta}</span>
                 </button>
@@ -395,7 +489,7 @@ export function Home() {
       <div className="relative px-6 py-24 overflow-hidden">
         <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 70% 70% at 50% 50%, rgba(99,102,241,0.1) 0%, transparent 65%)" }} />
         <div
-          className="cta-top-line relative z-10 max-w-180 mx-auto text-center rounded-4xl px-14 py-20"
+          className="cta-top-line relative z-10 max-w-180 mx-auto text-center rounded-4xl px-14 py-20 BANNER"
           style={{
             background: "rgba(255,255,255,0.025)",
             border: "1px solid rgba(99,102,241,0.2)",
@@ -428,7 +522,7 @@ export function Home() {
            FOOTER
       ══════════════════════════════ */}
       <footer className="border-t border-white/6 px-8 py-11">
-        <div className="max-w-300 mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+        <div className="FOOTER max-w-300 mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
           <div className="flex items-center gap-2.5 cursor-pointer">
             <div className="logo-icon relative w-8 h-8 rounded-[9px] flex items-center justify-center overflow-hidden shrink-0">
               <span className="relative z-10 text-[14px] font-bold text-white">W</span>
