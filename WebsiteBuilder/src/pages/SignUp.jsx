@@ -63,14 +63,13 @@ export function SignUp() {
         email: form.email,
         password: form.password
       });
-      setUser(res.data.user);
-      if(user.onboardingCompleted){
+      const signedUpUser = res.data.user;
+      setUser(signedUpUser);
+      if (signedUpUser?.onboardingCompleted) {
         navigate("/");
-      }
-      else{
+      } else {
         navigate("/onboarding");
       }
-      
     } catch (err) {
       setErrors({
         backend:
