@@ -111,7 +111,9 @@ router.get('/today', authMiddleware, async (req, res) => {
           // Build a title→exercise map for sourceExerciseId linking
           const exByTitle = {};
           (profile.exercises || []).forEach(ex => {
-            exByTitle[ex.title.toLowerCase().trim()] = ex._id;
+            if (ex.title) {
+              exByTitle[ex.title.toLowerCase().trim()] = ex._id;
+            }
           });
 
           docs = aiTasks.map(t => {
@@ -132,11 +134,8 @@ router.get('/today', authMiddleware, async (req, res) => {
             };
           });
         } catch (aiErr) {
-          console.error('AI task generation failed:', aiErr.message);
-          return res.status(500).json({
-            success: false,
-            message: 'Could not generate today\'s tasks. Please try again.',
-          });
+          console.error('AI task generation failed for /home/today:', aiErr);
+          docs = [];
         }
 
         if (docs.length > 0) {
