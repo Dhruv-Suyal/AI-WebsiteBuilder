@@ -85,6 +85,118 @@ const DEFAULT_SCREEN = [
   { id: 's3', app: 'Twitter/X', icon: '✦', limit: 15, used: 0, color: '#1d9bf0' },
 ];
 
+function normalizeTimeTo24h(value, fallback = '08:00') {
+  if (!value || typeof value !== 'string') return fallback;
+  const trimmed = value.trim();
+  if (/^\d{1,2}:\d{2}$/.test(trimmed)) return trimmed;
+  const match = trimmed.match(/^(\d{1,2})(?::(\d{2}))?\s*(AM|PM)$/i);
+  if (!match) return fallback;
+  let hour = Number(match[1]);
+  const minute = match[2] ? Number(match[2]) : 0;
+  const meridiem = match[3].toUpperCase();
+  if (meridiem === 'PM' && hour !== 12) hour += 12;
+  if (meridiem === 'AM' && hour === 12) hour = 0;
+  return `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+}
+
+function subtractMinutes(timeStr, minutes) {
+  const [hour, min] = timeStr.split(':').map(Number);
+  const date = new Date();
+  date.setHours(hour, min, 0, 0);
+  date.setMinutes(date.getMinutes() - minutes);
+  return `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+}
+
+function buildFallbackDayTasks(profile, today, userId) {
+  const wakeUp = normalizeTimeTo24h(profile.wakeUpTime, '06:00');
+  const sleepTime = normalizeTimeTo24h(profile.sleepTime, '22:00');
+  const sleepPrep = subtractMinutes(sleepTime, 30);
+
+  const tasks = [];
+
+  tasks.push({
+    userId,
+    title: 'Morning Routine',
+    description: 'Start your day with a clear mind and a healthy morning routine.',
+    category: 'mindfulness',
+    scheduledTime: wakeUp,
+    duration: 15,
+    difficulty: 'easy',
+    xpReward: 5,
+    aiGenerated: false,
+    date: new Date(today),
+    completed: false,
+  });
+
+  const activeExercises = (profile.exercises || []).filter(ex => ex.isActive !== false && ex.title);
+  activeExercises.forEach(ex => {
+    tasks.push({
+      userId,
+      title: ex.title,
+      description: ex.goal || 'Exercise for your fitness goals.',
+      category: (ex.category || 'exercise').toLowerCase(),
+      scheduledTime: normalizeTimeTo24h(ex.preferredTime, wakeUp),
+      duration: ex.duration ? Number(ex.duration) : 30,
+      difficulty: taskDifficulty(ex.difficulty),
+      xpReward: xpForDifficulty(ex.difficulty),
+      aiGenerated: false,
+      sourceExerciseId: ex._id,
+      date: new Date(today),
+      completed: false,
+    });
+  });
+
+  const habitsToBuild = (profile.habitsToBuild || []).slice(0, 2);
+  habitsToBuild.forEach((habit, idx) => {
+    const time = idx === 0 ? '08:30' : '18:00';
+    tasks.push({
+      userId,
+      title: `Build habit: ${habit}`,
+      description: `Work on your habit: ${habit}`,
+      category: 'habit',
+      scheduledTime: time,
+      duration: 15,
+      difficulty: 'easy',
+      xpReward: 10,
+      aiGenerated: false,
+      date: new Date(today),
+      completed: false,
+    });
+  });
+
+  tasks.push({
+    userId,
+    title: 'Wind Down & Sleep Prep',
+    description: 'Prepare for sleep with a calming bedtime routine.',
+    category: 'sleep',
+    scheduledTime: sleepPrep,
+    duration: 30,
+    difficulty: 'easy',
+    xpReward: 10,
+    aiGenerated: false,
+    date: new Date(today),
+    completed: false,
+  });
+
+  tasks.push({
+    userId,
+    title: 'Lights Out — Good Night 🌙',
+    description: 'Time to sleep and recover for tomorrow.',
+    category: 'sleep',
+    scheduledTime: sleepTime,
+    duration: 5,
+    difficulty: 'easy',
+    xpReward: 5,
+    aiGenerated: false,
+    date: new Date(today),
+    completed: false,
+  });
+
+  return tasks
+    .sort((a, b) => a.scheduledTime.localeCompare(b.scheduledTime))
+    .filter((task, index, arr) => index === arr.findIndex(t => t.title === task.title && t.scheduledTime === task.scheduledTime));
+}
+
 // ── GET /api/home/today ───────────────────────────────────────────────────────
 router.get('/today', authMiddleware, async (req, res) => {
   try {
@@ -136,6 +248,10 @@ router.get('/today', authMiddleware, async (req, res) => {
         } catch (aiErr) {
           console.error('AI task generation failed for /home/today:', aiErr);
           docs = [];
+        }
+
+        if (docs.length === 0) {
+          docs = buildFallbackDayTasks(profile, today, userId);
         }
 
         if (docs.length > 0) {
