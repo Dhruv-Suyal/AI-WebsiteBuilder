@@ -85,6 +85,20 @@ const DEFAULT_SCREEN = [
   { id: 's3', app: 'Twitter/X', icon: '✦', limit: 15, used: 0, color: '#1d9bf0' },
 ];
 
+function buildScreenTimeFromHabits(profile) {
+  const habits = (profile?.habitsToQuit || []).filter(Boolean).slice(0, 3);
+  if (habits.length === 0) return DEFAULT_SCREEN;
+  const colors = ['#ef4444', '#f59e0b', '#0ea5e9'];
+  return habits.map((habit, idx) => ({
+    id: `s${idx + 1}`,
+    app: habit,
+    icon: idx === 0 ? '⚠️' : idx === 1 ? '◈' : '✦',
+    limit: 30,
+    used: 0,
+    color: colors[idx % colors.length],
+  }));
+}
+
 function normalizeTimeTo24h(value, fallback = '08:00') {
   if (!value || typeof value !== 'string') return fallback;
   const trimmed = value.trim();
@@ -308,11 +322,39 @@ router.get('/today', authMiddleware, async (req, res) => {
         userId,
         date:       today,
         food:       foodEntries || DEFAULT_FOOD,
-        screenTime: DEFAULT_SCREEN,
+        screenTime: buildScreenTimeFromHabits(profile),
         score:      0,
         // Snapshot the diet plan used today
         dietPlan:   activeDiet || null,
       });
+    } else {
+      const activeDiet = (profile?.diets || []).find(d => d.isActive !== false);
+      const foodEntries = activeDiet ? buildFoodFromDiet(activeDiet) : null;
+      let updated = false;
+
+      if ((!wellness.dietPlan || !wellness.dietPlan.title) && activeDiet) {
+        wellness.dietPlan = activeDiet;
+        updated = true;
+      }
+
+      if ((!wellness.food || wellness.food.length === 0) && foodEntries) {
+        wellness.food = foodEntries;
+        updated = true;
+      }
+
+      if ((!wellness.food || wellness.food.length === 0) && !foodEntries) {
+        wellness.food = DEFAULT_FOOD;
+        updated = true;
+      }
+
+      if ((!wellness.screenTime || wellness.screenTime.length === 0) && profile) {
+        wellness.screenTime = buildScreenTimeFromHabits(profile);
+        updated = true;
+      }
+
+      if (updated) {
+        await wellness.save();
+      }
     }
 
     // ── Weekly scores (last 7 days) from stored WellnessLog.score ────────────
