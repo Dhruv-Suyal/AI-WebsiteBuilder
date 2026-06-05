@@ -8,6 +8,33 @@ function getTodayDate() {
    return d.toISOString().slice(0, 10);
 }
 
+function normalizeTimeTo24h(value, fallback = '08:00') {
+  if (!value || typeof value !== 'string') return fallback;
+  const trimmed = value.trim();
+  if (/^\d{1,2}:\d{2}$/.test(trimmed)) return trimmed;
+  const match = trimmed.match(/^(\d{1,2})(?::(\d{2}))?\s*(AM|PM)$/i);
+  if (!match) return fallback;
+  let hour = Number(match[1]);
+  const minute = match[2] ? Number(match[2]) : 0;
+  const meridiem = match[3].toUpperCase();
+  if (meridiem === 'PM' && hour !== 12) hour += 12;
+  if (meridiem === 'AM' && hour === 12) hour = 0;
+  return `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+}
+
+function buildFoodEntriesFromDiet(diet) {
+  if (!diet || !diet.meals || !Array.isArray(diet.meals) || diet.meals.length === 0) return [];
+  return diet.meals.map((meal, idx) => ({
+    id:       `f${idx + 1}`,
+    meal:     meal.type || meal.title || 'Meal',
+    time:     normalizeTimeTo24h(meal.time || '08:00'),
+    calories: meal.calories || 0,
+    items:    meal.foods || [],
+    macros:   meal.macros || { protein: '0g', carbs: '0g', fat: '0g' },
+    done:     false,
+  }));
+}
+
 // ═══════════════════════════════════════════════════════════════════
 // POST /api/diet/generate
 // body: { title, goal, dietaryRestrictions }
@@ -196,8 +223,9 @@ exports.saveDietToday = async (req, res) => {
          log = new WellnessLog({ userId, date: today });
       }
 
-      // Save diet plan to today's log
+      // Save diet plan to today's log and seed meals into today's food intake
       log.dietPlan = { title, goal, category, totalCalories, meals, image };
+      log.food = buildFoodEntriesFromDiet({ meals });
       await log.save();
 
       // Also add to Profile.diets[] for history

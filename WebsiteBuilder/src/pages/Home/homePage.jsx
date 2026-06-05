@@ -45,6 +45,18 @@ function to24h(str) {
   return `${String(h).padStart(2, "0")}:${String(m || 0).padStart(2, "0")}`;
 }
 
+function to12h(str) {
+  if (!str) return "--:--";
+  const normalized = str.includes("AM") || str.includes("PM") ? str : to24h(str);
+  const [hourPart, minutePart] = normalized.split(":");
+  let hour = Number(hourPart);
+  const minute = minutePart || "00";
+  const period = hour >= 12 ? "PM" : "AM";
+  if (hour === 0) hour = 12;
+  if (hour > 12) hour -= 12;
+  return `${hour}:${minute} ${period}`;
+}
+
 // ── helpers ───────────────────────────────────────────────────────────────────
 function pad(n) { return String(n).padStart(2, "0"); }
 
@@ -87,27 +99,31 @@ function useClock() {
 // ── Transform raw TodayTask docs → UI activity shape ─────────────────────────
 function transformTasks(tasks, nowMins) {
   return tasks.map(t => {
-    const tMins = timeToMins(t.scheduledTime || "00:00");
+    const rawTime = t.scheduledTime || "00:00";
+    const scheduled = to24h(rawTime);
+    const tMins = timeToMins(scheduled);
     const diff  = tMins - nowMins;
     let status;
     if (t.completed) {
       status = "done";
-    } else if (diff > -5 && diff <= 30) {
-      status = "active";   // within 5 min past → 30 min future = active now
+    } else if (diff >= -30 && diff <= 30) {
+      status = "active";   // within 30 min past → 30 min future = active now
     } else if (diff > 30) {
       status = "upcoming";
     } else {
-      status = "missed";   // more than 5 min past and not done
+      status = "late";     // past due but still user-actionable
     }
     const isQuit = (t.category || "").toLowerCase() === "habit-quit";
     return {
       id:         t._id,
-      time:       t.scheduledTime || "--:--",
+      time:       to12h(scheduled),
+      time24:     scheduled,
       label:      t.title,
       description:t.description || "",
       duration:   t.duration ? `${t.duration} min` : "--",
       icon:       catIcon(t.category),
       status,
+      lateBy:     diff < 0 ? Math.abs(diff) : 0,
       scoreDelta: t.xpReward || 10,
       category:   t.category || "mindfulness",
       isQuit,
@@ -182,10 +198,11 @@ function SectionLabel({ children, color }) {
 function ActivityPanel({ activities, onMarkDone, clock }) {
   const nowMins = clock.getHours() * 60 + clock.getMinutes();
 
-  // Find the single active task (first active, or first upcoming)
+  // Find the single active or late task, otherwise next upcoming
   const activeTask   = activities.find(a => a.status === "active");
+  const nextLate    = activities.find(a => a.status === "late");
   const nextUpcoming = activities.find(a => a.status === "upcoming");
-  const focusId      = activeTask?.id || nextUpcoming?.id;
+  const focusId      = activeTask?.id || nextLate?.id || nextUpcoming?.id;
 
   return (
     <Panel style={{ display: "flex", flexDirection: "column", overflow: "hidden", flex: 1 }}>
@@ -226,13 +243,13 @@ function ActivityPanel({ activities, onMarkDone, clock }) {
         {activities.map((act, i) => {
           const isDone    = act.status === "done";
           const isActive  = act.status === "active";
-          const isMissed  = act.status === "missed";
+          const isLate    = act.status === "late";
           const isUp      = act.status === "upcoming";
           const isQuit    = act.isQuit;
           const isFocus   = act.id === focusId;
 
-          const accentColor = isDone ? "#00f5d4" : isActive ? "#f59e0b" : isMissed ? "#ef4444" : isQuit ? "#f97316" : "rgba(255,255,255,0.18)";
-          const minsLeft    = isUp ? minsUntil(act.time) : null;
+          const accentColor = isDone ? "#00f5d4" : isActive ? "#f59e0b" : isLate ? "#f59e0b" : isQuit ? "#f97316" : "rgba(255,255,255,0.18)";
+          const minsLeft    = (isUp || isLate) ? minsUntil(act.time24) : null;
 
           return (
             <div key={act.id}
@@ -251,15 +268,19 @@ function ActivityPanel({ activities, onMarkDone, clock }) {
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 3 }}>
                   <span style={{ fontFamily: "var(--ff-mono)", fontSize: 10, color: accentColor, letterSpacing: 1 }}>{act.time}</span>
                   <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                    {/* Live countdown badge for upcoming tasks */}
                     {isUp && minsLeft !== null && (
                       <span style={{
                         fontFamily: "var(--ff-mono)", fontSize: 9, color: "#7c3aed",
                         background: "rgba(124,58,237,0.1)", borderRadius: 4, padding: "1px 6px",
                       }}>in {fmtCountdown(minsLeft)}</span>
                     )}
+                    {isLate && minsLeft !== null && (
+                      <span style={{
+                        fontFamily: "var(--ff-mono)", fontSize: 9, color: "#f59e0b",
+                        background: "rgba(245,158,11,0.1)", borderRadius: 4, padding: "1px 6px",
+                      }}>Late {fmtCountdown(Math.abs(minsLeft))}</span>
+                    )}
                     {isDone && <span style={{ fontFamily: "var(--ff-mono)", fontSize: 9, color: "#00f5d4", background: "rgba(0,245,212,0.1)", borderRadius: 4, padding: "1px 6px" }}>+{act.scoreDelta} pts</span>}
-                    {isMissed && <span style={{ fontFamily: "var(--ff-mono)", fontSize: 9, color: "#ef4444", background: "rgba(239,68,68,0.1)", borderRadius: 4, padding: "1px 6px" }}>missed</span>}
                   </div>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 4 }}>
@@ -273,14 +294,14 @@ function ActivityPanel({ activities, onMarkDone, clock }) {
                 </div>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                   <span style={{ fontFamily: "var(--ff-mono)", fontSize: 9, color: "rgba(255,255,255,0.2)" }}>{act.duration}</span>
-                  {isActive && (
+                  {(isActive || isLate) && !isDone && (
                     <button className="fp-done-btn" onClick={() => onMarkDone(act.id)}>✓ Done</button>
                   )}
                   {isUp && (
                     <button className="fp-done-btn" style={{ opacity: 0.3, cursor: 'not-allowed' }} disabled title="Task starts at scheduled time">✓ Done</button>
                   )}
                   {isDone && <span style={{ fontFamily: "var(--ff-mono)", fontSize: 9, color: "rgba(0,245,212,0.4)" }}>Completed ✓</span>}
-                  {isMissed && <span style={{ fontFamily: "var(--ff-mono)", fontSize: 9, color: "rgba(239,68,68,0.4)" }}>Missed</span>}
+                  {isLate && !isDone && <span style={{ fontFamily: "var(--ff-mono)", fontSize: 9, color: "rgba(245,158,11,0.4)" }}>Not completed</span>}
                 </div>
               </div>
             </div>
@@ -324,7 +345,7 @@ function CenterPanel({ user, activities, sleep, weekScores, scoreBreakdown, next
   const sleepCdown  = minsUntil(sleep.bedtime);
 
   // Next upcoming/active task for the countdown
-  const nextTask = activities.find(a => a.status === "active" || a.status === "upcoming");
+  const nextTask = activities.find(a => a.status === "active" || a.status === "late" || a.status === "upcoming");
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -372,7 +393,7 @@ function CenterPanel({ user, activities, sleep, weekScores, scoreBreakdown, next
       {nextTask && (
         <Panel className="fp-center-panel" style={{ padding: "14px 16px" }}>
           <div style={{ fontFamily: "var(--ff-mono)", fontSize: 9, letterSpacing: 2, color: "rgba(245,158,11,0.5)", marginBottom: 10 }}>
-            {nextTask.status === "active" ? "⚡ ACTIVE NOW" : "⏱ NEXT TASK"}
+            {nextTask.status === "active" ? "⚡ ACTIVE NOW" : nextTask.status === "late" ? "⚠ OVERDUE" : "⏱ NEXT TASK"}
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <div style={{
@@ -395,10 +416,12 @@ function CenterPanel({ user, activities, sleep, weekScores, scoreBreakdown, next
                 </>
               ) : (
                 <>
-                  <div style={{ fontFamily: "var(--ff-mono)", fontSize: 18, fontWeight: 700, color: "#7c3aed", textShadow: "0 0 14px rgba(124,58,237,0.5)" }}>
+                  <div style={{ fontFamily: "var(--ff-mono)", fontSize: 18, fontWeight: 700, color: nextTask.status === "late" ? "#f59e0b" : "#7c3aed", textShadow: nextTask.status === "late" ? "0 0 14px rgba(245,158,11,0.5)" : "0 0 14px rgba(124,58,237,0.5)" }}>
                     {fmtSeconds(nextTaskSecs)}
                   </div>
-                  <div style={{ fontFamily: "var(--ff-mono)", fontSize: 8, color: "rgba(255,255,255,0.2)", marginTop: 2 }}>UNTIL START</div>
+                  <div style={{ fontFamily: "var(--ff-mono)", fontSize: 8, color: "rgba(255,255,255,0.2)", marginTop: 2 }}>
+                    {nextTask.status === "late" ? "OVERDUE" : "UNTIL START"}
+                  </div>
                 </>
               )}
             </div>
@@ -549,7 +572,7 @@ function WellnessPanel({ water, food, screenTime, dietPlan, onWaterTap, onFoodDo
                 <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 3 }}>
                   <span style={{ fontSize: 14 }}>{MEAL_ICON[meal.meal] || "🍽️"}</span>
                   <span style={{ fontFamily: "var(--ff-body)", fontSize: 13, fontWeight: 700, color: meal.done ? "rgba(255,255,255,0.4)" : "#e2e8f0" }}>{meal.meal}</span>
-                  <span style={{ fontFamily: "var(--ff-mono)", fontSize: 9, color: "rgba(255,255,255,0.2)" }}>{meal.time}</span>
+                  <span style={{ fontFamily: "var(--ff-mono)", fontSize: 9, color: "rgba(255,255,255,0.2)" }}>{to12h(meal.time)}</span>
                 </div>
                 {/* Macros row */}
                 {meal.macros && (meal.macros.protein || meal.macros.carbs || meal.macros.fat) && (
