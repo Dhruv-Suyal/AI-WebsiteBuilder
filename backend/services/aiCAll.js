@@ -139,12 +139,21 @@ Return ONLY valid JSON — no markdown, no explanation, nothing else:
 
    // Safety check
    if (!cleaned.startsWith('{')) {
-      throw new Error('AI returned invalid JSON format for day tasks');
+      console.error('AI returned invalid JSON format for day tasks:', cleaned);
+      return [];
    }
 
-   const parsed = JSON.parse(cleaned);
-   if (!Array.isArray(parsed.tasks)) {
-      throw new Error('AI response missing tasks array');
+   let parsed;
+   try {
+      parsed = JSON.parse(cleaned);
+   } catch (parseErr) {
+      console.error('Failed to parse AI day tasks response:', parseErr, cleaned);
+      return [];
+   }
+
+   if (!parsed || !Array.isArray(parsed.tasks)) {
+      console.error('AI day tasks response missing tasks array:', parsed);
+      return [];
    }
 
    return parsed.tasks;
