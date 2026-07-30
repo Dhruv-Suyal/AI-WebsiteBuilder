@@ -127,7 +127,7 @@ If you return any other value, the response is invalid.
 STRICT EXCLUSIONS — do NOT generate any tasks related to:
 - Diet, meals, food, eating, breakfast, lunch, dinner, snacks, calories, nutrition
 - Diet tracking or meal planning of any kind
-Strictly follow this example 
+Strictly follow this example
 Example:-
   "title": "Push-ups",
   "description": "Upper body workout",
