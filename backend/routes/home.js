@@ -383,7 +383,14 @@ router.get('/today', authMiddleware, async (req, res) => {
 
     res.json({ success: true, tasks, wellness, profile, weeklyScores });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+  console.error("HOME TODAY ERROR");
+  console.error(err);
+  console.error(err.stack);
+
+  res.status(500).json({
+    success: false,
+    message: err.message,
+  });
   }
 });
 
