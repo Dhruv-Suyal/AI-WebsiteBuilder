@@ -104,7 +104,21 @@ SCHEDULING RULES:
 6. LAST task = sleep reminder exactly at bedtime (category: sleep, title: "Lights Out — Good Night 🌙", duration: 5, xpReward: 5)
 7. scheduledTime MUST be 24-hour format "HH:MM" (e.g. "06:30", "21:30")
 8. category must be exactly one of: exercise, strength, cardio, mobility, mindfulness, sleep, hydration, learning, habit, habit-quit
-9. difficulty must be exactly one of: easy, medium, hard
+9. IMPORTANT:
+The difficulty field MUST be one of these exact values only:
+
+- easy
+- medium
+- hard
+
+Never return:
+- beginner
+- intermediate
+- advanced
+- novice
+- expert
+
+If you return any other value, the response is invalid.
 10. xpReward: 5 for light habits/reminders, 10-15 for moderate tasks, 20-30 for workouts
 11. duration is in minutes (integer)
 12. Ensure NO two tasks overlap in time — space them at least 30 min apart
@@ -113,6 +127,16 @@ SCHEDULING RULES:
 STRICT EXCLUSIONS — do NOT generate any tasks related to:
 - Diet, meals, food, eating, breakfast, lunch, dinner, snacks, calories, nutrition
 - Diet tracking or meal planning of any kind
+Strictly follow this example 
+Example:-
+  "title": "Push-ups",
+  "description": "Upper body workout",
+  "category": "strength",
+  "scheduledTime": "07:00",
+  "duration": 20,
+  "difficulty": "easy",
+  "xpReward": 10
+}
 
 Return ONLY valid JSON — no markdown, no explanation, nothing else:
 {
